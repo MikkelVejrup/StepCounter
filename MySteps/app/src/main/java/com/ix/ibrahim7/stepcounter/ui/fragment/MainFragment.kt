@@ -74,11 +74,13 @@ class MainFragment : Fragment() , SensorEventListener {
 
 
     fun resetSteps() {
+        // set steps to 1000
         mBinding.txtStepCount.setOnLongClickListener {
+            totalStep = 1000f
             previousTotalStep = totalStep
-            mBinding.txtStepCount.text = "0"
+            mBinding.txtStepCount.text = "1000"
             mBinding.circularProgressBar.apply {
-                setProgressWithAnimation(0f)
+                setProgressWithAnimation(1000f)
             }
             saveDate()
             true

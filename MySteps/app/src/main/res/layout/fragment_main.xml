@@ -10,14 +10,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/black"
         tools:context=".ui.fragment.MainFragment">
 
         <com.mikhaellopez.circularprogressbar.CircularProgressBar
             android:id="@+id/circularProgressBar"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            app:cpb_background_progressbar_color="#f2f2f2"
-            app:cpb_background_progressbar_width="20sp"
+            android:layout_marginBottom="200dp"
+            app:cpb_background_progressbar_color="#65F2F2F2"
+            app:cpb_background_progressbar_width="5sp"
             app:cpb_progress_direction="to_right"
             app:cpb_progress_max="2500"
             app:cpb_progressbar_color="@color/purple_700"
@@ -34,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="40dp"
             app:layout_constraintBottom_toBottomOf="@+id/circularProgressBar"
             app:layout_constraintEnd_toEndOf="@+id/circularProgressBar"
@@ -49,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="/2500"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@+id/circularProgressBar"
             app:layout_constraintStart_toStartOf="@+id/circularProgressBar"
@@ -63,6 +65,21 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="264dp"
+            android:layout_height="54dp"
+            android:layout_marginTop="32dp"
+            android:text="Today"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/circularProgressBar"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

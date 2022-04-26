@@ -19,12 +19,14 @@
             </intent-filter>
         </activity>
 
-
+        <!--
         <service android:name=".service.MyService"
             android:enabled="true"
             android:exported="false"/>
 
+
         <receiver android:name=".service.MyPhoneReciver"/>
+        -->
 
     </application>
 
