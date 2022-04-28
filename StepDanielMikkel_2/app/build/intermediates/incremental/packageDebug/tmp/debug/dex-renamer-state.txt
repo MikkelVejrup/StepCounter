@@ -1,0 +1,4 @@
+#Thu Apr 28 14:36:15 CEST 2022
+base.0=/home/daniel/myWorkspace/Android_Studio/AndroidRepo/StepDanielMikkel_2/app/build/intermediates/dex/debug/mergeDexDebug/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex

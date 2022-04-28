@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/home/daniel/myWorkspace/Android_Studio/AndroidRepo/StepDanielMikkel_2/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_main.xml",
+        "source": "/home/daniel/myWorkspace/Android_Studio/AndroidRepo/StepDanielMikkel_2/app/src/main/res/layout/activity_main.xml"
+    },
+    {
+        "merged": "/home/daniel/myWorkspace/Android_Studio/AndroidRepo/StepDanielMikkel_2/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/fragment_main.xml",
+        "source": "/home/daniel/myWorkspace/Android_Studio/AndroidRepo/StepDanielMikkel_2/app/src/main/res/layout/fragment_main.xml"
+    }
+]
