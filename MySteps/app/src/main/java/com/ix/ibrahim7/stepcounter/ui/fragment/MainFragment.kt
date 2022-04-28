@@ -6,15 +6,18 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import com.ix.ibrahim7.stepcounter.R
 import com.ix.ibrahim7.stepcounter.databinding.FragmentMainBinding
 import com.ix.ibrahim7.stepcounter.other.STEPNUMBER
 import com.ix.ibrahim7.stepcounter.util.Constant
+
 
 
 class MainFragment : Fragment() , SensorEventListener {
@@ -26,18 +29,28 @@ class MainFragment : Fragment() , SensorEventListener {
     private var previousTotalStep = 0f
 
 
+
+
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
         super.onResume()
         running = true
         val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
 
         sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
+
+
     }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
        mBinding = FragmentMainBinding.inflate(inflater,container,false).apply {
            executePendingBindings()
        }
@@ -45,6 +58,8 @@ class MainFragment : Fragment() , SensorEventListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+
 
         mBinding.circularProgressBar.apply {
             setProgressWithAnimation(0f)
@@ -74,18 +89,21 @@ class MainFragment : Fragment() , SensorEventListener {
 
 
     fun resetSteps() {
-        // set steps to 1000
         mBinding.txtStepCount.setOnLongClickListener {
-            totalStep = 1000f
             previousTotalStep = totalStep
             mBinding.txtStepCount.text = "1000"
             mBinding.circularProgressBar.apply {
                 setProgressWithAnimation(1000f)
+
+
             }
             saveDate()
             true
+
         }
     }
+
+
 
     private fun saveDate() {
             Constant.editor(requireContext()).putFloat(STEPNUMBER, previousTotalStep).apply()
