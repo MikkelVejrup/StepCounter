@@ -93,6 +93,33 @@ class MainFragment : Fragment() , SensorEventListener {
             mBinding.circularProgressBar.apply {
                 setProgressWithAnimation(1000f)
 
+            }
+            mBinding.circularProgressBarMo.apply {
+                setProgressWithAnimation(2500f)
+
+            }
+            mBinding.circularProgressBarMo2.apply {
+                setProgressWithAnimation(1050f)
+
+            }
+            mBinding.circularProgressBarMo3.apply {
+                setProgressWithAnimation(1000f)
+
+            }
+            mBinding.circularProgressBarMo4.apply {
+                setProgressWithAnimation(20000f)
+
+            }
+            mBinding.circularProgressBarMo5.apply {
+                setProgressWithAnimation(500f)
+
+            }
+            mBinding.circularProgressBarMo6.apply {
+                setProgressWithAnimation(2500f)
+
+            }
+            mBinding.circularProgressBarMo7.apply {
+                setProgressWithAnimation(1000f)
 
             }
             saveDate()
