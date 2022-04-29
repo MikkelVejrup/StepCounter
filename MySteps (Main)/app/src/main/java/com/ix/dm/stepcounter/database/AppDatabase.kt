@@ -7,4 +7,7 @@ import androidx.room.RoomDatabase
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 
+    //TESTVARIABLE TIL GIT KRAKEN
+    private var testvar = 0
+
 }
