@@ -1,4 +1,4 @@
-package com.ix.ibrahim7.stepcounter.ui.activity
+package com.ix.dm.stepcounter.ui.activity
 
 import android.annotation.SuppressLint
 import android.app.Service
@@ -16,9 +16,9 @@ import android.os.IBinder
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import com.ix.ibrahim7.stepcounter.databinding.ActivityMainBinding
-import com.ix.ibrahim7.stepcounter.other.*
-import com.ix.ibrahim7.stepcounter.util.Constant
+import com.ix.dm.stepcounter.databinding.ActivityMainBinding
+import com.ix.dm.stepcounter.other.*
+import com.ix.dm.stepcounter.util.Constant
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

@@ -1,4 +1,4 @@
-package com.ix.ibrahim7.stepcounter.util
+package com.ix.dm.stepcounter.util
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -8,8 +8,8 @@ import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import com.ix.ibrahim7.stepcounter.other.*
-import com.ix.ibrahim7.stepcounter.R
+import com.ix.dm.stepcounter.other.*
+import com.ix.dm.stepcounter.R
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken

@@ -1,4 +1,4 @@
-package com.ix.ibrahim7.stepcounter.other
+package com.ix.dm.stepcounter.other
 
 const val TAG = "eee"
 const val SHARE = "share"

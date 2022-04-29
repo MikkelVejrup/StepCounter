@@ -1,4 +1,4 @@
-package com.ix.ibrahim7.stepcounter
+package com.ix.dm.stepcounter
 
 import org.junit.Test
 
