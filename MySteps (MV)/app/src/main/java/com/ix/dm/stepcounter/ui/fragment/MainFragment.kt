@@ -64,6 +64,9 @@ class MainFragment : Fragment() , SensorEventListener {
         }
         loadData()
         resetSteps()
+        addStepsManuel()
+
+
 
         sensorManager = requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
@@ -83,60 +86,62 @@ class MainFragment : Fragment() , SensorEventListener {
             setProgressWithAnimation(currentSteps.toFloat())
         }
 
+
+
     }
 
 
     fun addStepsManuel() {
-        mBinding.button.setOnClickListener {
 
-                totalStep = totalStep + 1
+        mBinding.buttonStep.setOnClickListener {
+            if (running)
+            totalStep += 1
             val currentSteps = totalStep.toInt() - previousTotalStep.toInt()
             mBinding.txtStepCount.text = ("$currentSteps")
 
             mBinding.circularProgressBar.apply {
                 setProgressWithAnimation(currentSteps.toFloat())
-            }
 
-            saveDate()
-            true
+            }
         }
+
     }
 
 
     fun resetSteps() {
         mBinding.txtStepCount.setOnLongClickListener {
             previousTotalStep = totalStep
-            mBinding.txtStepCount.text = "1000"
+            mBinding.txtStepCount.text = "0"
             mBinding.circularProgressBar.apply {
-                setProgressWithAnimation(1000f)
+                setProgressWithAnimation(0f)
 
             }
             mBinding.circularProgressBarMo.apply {
-                setProgressWithAnimation(2500f)
+                setProgressWithAnimation(0f)
 
             }
             mBinding.circularProgressBarTu.apply {
-                setProgressWithAnimation(1050f)
+                setProgressWithAnimation(0f)
 
             }
             mBinding.circularProgressBarWe.apply {
-                setProgressWithAnimation(1000f)
+                setProgressWithAnimation(0f)
 
             }
             mBinding.circularProgressBarTh.apply {
-                setProgressWithAnimation(20000f)
+                setProgressWithAnimation(0f)
 
             }
             mBinding.circularProgressBarFr.apply {
-                setProgressWithAnimation(500f)
+                setProgressWithAnimation(0f)
 
             }
             mBinding.circularProgressBarSa.apply {
-                setProgressWithAnimation(2500f)
+                setProgressWithAnimation(0f)
 
             }
             mBinding.circularProgressBarSu.apply {
-                setProgressWithAnimation(1000f)
+                setProgressWithAnimation(0f)
 
             }
             saveDate()

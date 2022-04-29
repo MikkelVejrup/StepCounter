@@ -11,7 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.StepCounter">
-        <activity android:name="com.ix.dm.stepcounter.ui.activity.MainActivity">
+
+        <activity
+            android:name="com.ix.dm.stepcounter.ui.activity.MainActivity"
+            android:screenOrientation="portrait"> <!-- Set the screen mode to Portrait mode only  -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
