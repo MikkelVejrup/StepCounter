@@ -86,6 +86,23 @@ class MainFragment : Fragment() , SensorEventListener {
     }
 
 
+    fun addStepsManuel() {
+        mBinding.button.setOnClickListener {
+
+                totalStep = totalStep + 1
+            val currentSteps = totalStep.toInt() - previousTotalStep.toInt()
+            mBinding.txtStepCount.text = ("$currentSteps")
+
+            mBinding.circularProgressBar.apply {
+                setProgressWithAnimation(currentSteps.toFloat())
+            }
+
+            saveDate()
+            true
+        }
+    }
+
+
     fun resetSteps() {
         mBinding.txtStepCount.setOnLongClickListener {
             previousTotalStep = totalStep
@@ -98,27 +115,27 @@ class MainFragment : Fragment() , SensorEventListener {
                 setProgressWithAnimation(2500f)
 
             }
-            mBinding.circularProgressBarMo2.apply {
+            mBinding.circularProgressBarTu.apply {
                 setProgressWithAnimation(1050f)
 
             }
-            mBinding.circularProgressBarMo3.apply {
+            mBinding.circularProgressBarWe.apply {
                 setProgressWithAnimation(1000f)
 
             }
-            mBinding.circularProgressBarMo4.apply {
+            mBinding.circularProgressBarTh.apply {
                 setProgressWithAnimation(20000f)
 
             }
-            mBinding.circularProgressBarMo5.apply {
+            mBinding.circularProgressBarFr.apply {
                 setProgressWithAnimation(500f)
 
             }
-            mBinding.circularProgressBarMo6.apply {
+            mBinding.circularProgressBarSa.apply {
                 setProgressWithAnimation(2500f)
 
             }
-            mBinding.circularProgressBarMo7.apply {
+            mBinding.circularProgressBarSu.apply {
                 setProgressWithAnimation(1000f)
 
             }
