@@ -73,6 +73,7 @@ dependencies {
     //dexter
     implementation 'com.karumi:dexter:6.2.2'
 
+
     //ROOM Database implementation========================================
     def room_version = "2.4.2"
 
@@ -80,11 +81,11 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
 
     // optional - Kotlin Extensions and Coroutines support for Room
-    implementation "androidx.room:room-ktx:$room_version"
+    //implementation "androidx.room:room-ktx:$room_version"
 
     // optional - Test helpers
-    testImplementation "androidx.room:room-testing:$room_version"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    //testImplementation "androidx.room:room-testing:$room_version"
+    //implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //====================================================================
 
 }

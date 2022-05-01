@@ -3,11 +3,9 @@ package com.ix.dm.stepcounter.database
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "user")
+@Entity(tableName = "StepTable")
 data class User(
-    @PrimaryKey
-    val uid: Int,
-    val name: String,
-    val address: String,
-    val dateOfBirth: Long = 0
+    @PrimaryKey(autoGenerate = true) val uid: Int = 0,
+    val dayCode: String = "",
+    val stepsCounted: Int = 0
 )
