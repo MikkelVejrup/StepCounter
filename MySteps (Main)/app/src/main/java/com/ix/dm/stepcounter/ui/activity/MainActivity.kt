@@ -10,22 +10,26 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import android.util.Log.d
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.room.Room
+import com.ix.dm.stepcounter.database.AppDatabase
+import com.ix.dm.stepcounter.database.User
+import com.ix.dm.stepcounter.database.UserDao
 import com.ix.dm.stepcounter.databinding.ActivityMainBinding
-import com.ix.dm.stepcounter.other.*
+import com.ix.dm.stepcounter.other.STEPNUMBER
 import com.ix.dm.stepcounter.util.Constant
 import kotlinx.android.synthetic.main.activity_main.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
-
-
     private lateinit var mBinding: ActivityMainBinding
-
 
     override fun onResume() {
         stopService(Intent(this, MyService::class.java))
@@ -40,18 +44,25 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
-    }
+        //ROOM database setup
+        val database = Room.databaseBuilder(this, AppDatabase::class.java,"Step_Database"
+        )   .allowMainThreadQueries()
+            .build()
 
+        //Inserting a user, depending on the date
+        //val currentTime: Date = Calendar.getInstance().getTime() //Gets current date
+        //val currentDay = android.text.format.DateFormat.format("EEEE", currentTime) //extracts current day name
+        //database.userDao().insert( User(dayCode = currentDay.toString(), stepsCounted = 321) )
+
+    }
 
     override fun onStop() {
         ContextCompat.startForegroundService(this, Intent(this, MyService::class.java))
         super.onStop()
     }
-
 }
 
 class MyService : Service(), SensorEventListener {
-
     private var sensorManager: SensorManager? = null
     private var running = false
     private var totalStep = 0f
@@ -67,14 +78,12 @@ class MyService : Service(), SensorEventListener {
         } catch (e: Exception) {
             Log.e("eee ERROR", e.message.toString())
         }
-
-
         return START_STICKY
     }
 
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-
+        //EMPTY
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
