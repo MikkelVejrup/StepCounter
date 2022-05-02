@@ -157,11 +157,13 @@ class MainFragment : Fragment() , SensorEventListener {
 
             saveDate()
             true
-
         }
     }
 
+    private fun detectDateChange() {
+        
 
+    }
 
     private fun saveDate() {
             Constant.editor(requireContext()).putFloat(STEPNUMBER, previousTotalStep).apply()

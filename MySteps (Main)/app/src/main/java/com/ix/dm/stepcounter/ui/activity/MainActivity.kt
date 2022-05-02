@@ -54,6 +54,11 @@ class MainActivity : AppCompatActivity() {
         //val currentDay = android.text.format.DateFormat.format("EEEE", currentTime) //extracts current day name
         //database.userDao().insert( User(dayCode = currentDay.toString(), stepsCounted = 321) )
 
+        //val dayStorage = database.userDao().getAllDays()
+
+        //Search for "dayTest" in LogCat to find this
+        //d("dayTest","all days stored? ${dayStorage}") //used for LogCat in order to see what it holds
+
     }
 
     override fun onStop() {
