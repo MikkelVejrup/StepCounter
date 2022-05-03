@@ -65,6 +65,7 @@ class MainActivity : AppCompatActivity() {
         ContextCompat.startForegroundService(this, Intent(this, MyService::class.java))
         super.onStop()
     }
+
 }
 
 class MyService : Service(), SensorEventListener {
@@ -112,11 +113,10 @@ class MyService : Service(), SensorEventListener {
         sendBroadcast(intent)
         super.onDestroy()
     }
-
 }
+
 class MyPhoneReciver : BroadcastReceiver(){
     override fun onReceive(context: Context?, intent: Intent?) {
         ContextCompat.startForegroundService(context!!, Intent(context, MyService::class.java))
     }
-
 }

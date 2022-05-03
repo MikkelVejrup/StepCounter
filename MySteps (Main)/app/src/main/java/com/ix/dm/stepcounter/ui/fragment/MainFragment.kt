@@ -1,7 +1,6 @@
 package com.ix.dm.stepcounter.ui.fragment
 
 import android.content.Context
-import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -19,6 +18,8 @@ import com.ix.dm.stepcounter.database.AppDatabase
 import com.ix.dm.stepcounter.databinding.FragmentMainBinding
 import com.ix.dm.stepcounter.other.STEPNUMBER
 import com.ix.dm.stepcounter.util.Constant
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class MainFragment : Fragment() , SensorEventListener {
@@ -28,8 +29,7 @@ class MainFragment : Fragment() , SensorEventListener {
     private var totalStep = 0f
     private var previousTotalStep = 0f
     private var stepsResetByLongPress = false //FOR DATABASE TEST
-    private var manualSetSteps = "344"
-
+    private var manualSetSteps = "0"
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -52,6 +52,7 @@ class MainFragment : Fragment() , SensorEventListener {
         return mBinding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mBinding.circularProgressBar.apply {
             setProgressWithAnimation(0f)}
@@ -60,6 +61,7 @@ class MainFragment : Fragment() , SensorEventListener {
         resetSteps()
         addStepsManuel()
         resetDatabase()
+        detectDateChange()
         sensorManager = requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
         super.onViewCreated(view, savedInstanceState)
@@ -95,7 +97,16 @@ class MainFragment : Fragment() , SensorEventListener {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun detectDateChange() {
+        val currentTime: String = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date())
 
+        val c = Calendar.getInstance()
+
+
+
+        d("TestTime","time? ${currentTime}") //used for LogCat in order to see what it holds
+    }
 
     private fun addStepsManuel() {
         mBinding.buttonStep.setOnClickListener {
@@ -121,10 +132,11 @@ class MainFragment : Fragment() , SensorEventListener {
         mBinding.txtStepCount.setOnLongClickListener {
             stepsResetByLongPress = true //FOR DATABASE TEST
 
-            //previousTotalStep = totalStep //FOR DATABASE TEST (commented out)
+            previousTotalStep = totalStep //FOR DATABASE TEST (commented out)
+
             mBinding.txtStepCount.text = manualSetSteps
             mBinding.circularProgressBar.apply {
-                setProgressWithAnimation(344f) //FOR DATABASE TEST
+                setProgressWithAnimation(0f) //FOR DATABASE TEST
             }
 
             mBinding.circularProgressBarMo.apply {
@@ -160,13 +172,9 @@ class MainFragment : Fragment() , SensorEventListener {
         }
     }
 
-    private fun detectDateChange() {
-        
-
-    }
 
     private fun saveDate() {
-            Constant.editor(requireContext()).putFloat(STEPNUMBER, previousTotalStep).apply()
+        Constant.editor(requireContext()).putFloat(STEPNUMBER, previousTotalStep).apply()
     }
 
     private fun loadData() {
