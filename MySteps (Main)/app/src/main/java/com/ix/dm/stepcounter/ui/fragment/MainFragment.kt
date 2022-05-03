@@ -46,8 +46,6 @@ class MainFragment : Fragment() , SensorEventListener {
         savedInstanceState: Bundle?
     ): View? {
 
-
-
        mBinding = FragmentMainBinding.inflate(inflater,container,false).apply {
            executePendingBindings()
        }
@@ -135,9 +133,9 @@ class MainFragment : Fragment() , SensorEventListener {
             stepsResetByLongPress = true //FOR DATABASE TEST
 
             //previousTotalStep = totalStep //FOR DATABASE TEST (commented out)
-            mBinding.txtStepCount.text = manualSetSteps
+            mBinding.txtStepCount.text = ("${manualSetSteps.toInt()}")
             mBinding.circularProgressBar.apply {
-                setProgressWithAnimation(344f) //FOR DATABASE TEST
+                setProgressWithAnimation(manualSetSteps) //FOR DATABASE TEST
             }
 
             mBinding.circularProgressBarMo.apply {
