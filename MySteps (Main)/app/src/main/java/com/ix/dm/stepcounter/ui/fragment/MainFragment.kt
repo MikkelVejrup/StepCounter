@@ -19,6 +19,8 @@ import com.ix.dm.stepcounter.databinding.FragmentMainBinding
 import com.ix.dm.stepcounter.other.STEPNUMBER
 import com.ix.dm.stepcounter.util.Constant
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -56,6 +58,14 @@ class MainFragment : Fragment() , SensorEventListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mBinding.circularProgressBar.apply {
             setProgressWithAnimation(0f)}
+
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("MM-dd HH:mm:ss")
+        val formatted = current.format(formatter)
+
+        mBinding.Time.text = ("$formatted")
+
+
 
         loadData()
         resetSteps()
@@ -110,6 +120,8 @@ class MainFragment : Fragment() , SensorEventListener {
 
     private fun addStepsManuel() {
         mBinding.buttonStep.setOnClickListener {
+
+
             if (running)
                 if (stepsResetByLongPress) { //FOR DATABASE TEST
                     totalStep = manualSetSteps.toFloat()
