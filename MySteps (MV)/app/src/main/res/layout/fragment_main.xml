@@ -27,15 +27,15 @@
             app:cpb_round_border="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.301" />
 
         <com.mikhaellopez.circularprogressbar.CircularProgressBar
             android:id="@+id/circularProgressBarMo"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginBottom="32dp"
             app:cpb_background_progressbar_color="#65F2F2F2"
             app:cpb_background_progressbar_width="5sp"
             app:cpb_progress_direction="to_right"
@@ -43,19 +43,16 @@
             app:cpb_progressbar_color="@color/purple_700"
             app:cpb_progressbar_width="7dp"
             app:cpb_round_border="true"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/circularProgressBarTu"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/group"
-            app:layout_constraintVertical_bias="0.95" />
+            app:layout_constraintTop_toBottomOf="@+id/group" />
 
         <com.mikhaellopez.circularprogressbar.CircularProgressBar
             android:id="@+id/circularProgressBarTu"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginBottom="32dp"
             app:cpb_background_progressbar_color="#65F2F2F2"
             app:cpb_background_progressbar_width="5sp"
             app:cpb_progress_direction="to_right"
@@ -63,19 +60,16 @@
             app:cpb_progressbar_color="@color/purple_700"
             app:cpb_progressbar_width="7dp"
             app:cpb_round_border="true"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/circularProgressBarWe"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/circularProgressBarMo"
-            app:layout_constraintTop_toBottomOf="@+id/group"
-            app:layout_constraintVertical_bias="0.95" />
+            app:layout_constraintTop_toBottomOf="@+id/group" />
 
         <com.mikhaellopez.circularprogressbar.CircularProgressBar
             android:id="@+id/circularProgressBarWe"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginBottom="32dp"
             app:cpb_background_progressbar_color="#65F2F2F2"
             app:cpb_background_progressbar_width="5sp"
             app:cpb_progress_direction="to_right"
@@ -83,19 +77,16 @@
             app:cpb_progressbar_color="@color/purple_700"
             app:cpb_progressbar_width="7dp"
             app:cpb_round_border="true"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/circularProgressBarTh"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/circularProgressBarTu"
-            app:layout_constraintTop_toBottomOf="@+id/group"
-            app:layout_constraintVertical_bias="0.95" />
+            app:layout_constraintTop_toBottomOf="@+id/group" />
 
         <com.mikhaellopez.circularprogressbar.CircularProgressBar
             android:id="@+id/circularProgressBarTh"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginBottom="32dp"
             app:cpb_background_progressbar_color="#65F2F2F2"
             app:cpb_background_progressbar_width="5sp"
             app:cpb_progress_direction="to_right"
@@ -103,19 +94,16 @@
             app:cpb_progressbar_color="@color/purple_700"
             app:cpb_progressbar_width="7dp"
             app:cpb_round_border="true"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/circularProgressBarFr"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/circularProgressBarWe"
-            app:layout_constraintTop_toBottomOf="@+id/group"
-            app:layout_constraintVertical_bias="0.95" />
+            app:layout_constraintTop_toBottomOf="@+id/group" />
 
         <com.mikhaellopez.circularprogressbar.CircularProgressBar
             android:id="@+id/circularProgressBarFr"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginBottom="32dp"
             app:cpb_background_progressbar_color="#65F2F2F2"
             app:cpb_background_progressbar_width="5sp"
             app:cpb_progress_direction="to_right"
@@ -123,19 +111,16 @@
             app:cpb_progressbar_color="@color/purple_700"
             app:cpb_progressbar_width="7dp"
             app:cpb_round_border="true"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/circularProgressBarSa"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/circularProgressBarTh"
-            app:layout_constraintTop_toBottomOf="@+id/group"
-            app:layout_constraintVertical_bias="0.95" />
+            app:layout_constraintTop_toBottomOf="@+id/group" />
 
         <com.mikhaellopez.circularprogressbar.CircularProgressBar
             android:id="@+id/circularProgressBarSa"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginBottom="32dp"
             app:cpb_background_progressbar_color="#65F2F2F2"
             app:cpb_background_progressbar_width="5sp"
             app:cpb_progress_direction="to_right"
@@ -143,19 +128,16 @@
             app:cpb_progressbar_color="@color/purple_700"
             app:cpb_progressbar_width="7dp"
             app:cpb_round_border="true"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/circularProgressBarSu"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/circularProgressBarFr"
-            app:layout_constraintTop_toBottomOf="@+id/group"
-            app:layout_constraintVertical_bias="0.95" />
+            app:layout_constraintTop_toBottomOf="@+id/group" />
 
         <com.mikhaellopez.circularprogressbar.CircularProgressBar
             android:id="@+id/circularProgressBarSu"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginBottom="32dp"
             app:cpb_background_progressbar_color="#65F2F2F2"
             app:cpb_background_progressbar_width="5sp"
             app:cpb_progress_direction="to_right"
@@ -163,12 +145,10 @@
             app:cpb_progressbar_color="@color/purple_700"
             app:cpb_progressbar_width="7dp"
             app:cpb_round_border="true"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/circularProgressBarSa"
-            app:layout_constraintTop_toBottomOf="@+id/group"
-            app:layout_constraintVertical_bias="0.95" />
+            app:layout_constraintTop_toBottomOf="@+id/group" />
 
         <TextView
             android:id="@+id/txtStepCount"
@@ -211,7 +191,6 @@
             android:id="@+id/textView"
             android:layout_width="264dp"
             android:layout_height="54dp"
-            android:layout_marginTop="32dp"
             android:text="Today"
             android:textAlignment="center"
             android:textColor="@color/white"
@@ -219,8 +198,10 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/circularProgressBar"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.51"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/day1"
@@ -317,21 +298,12 @@
             android:id="@+id/buttonStep"
             android:layout_width="91dp"
             android:layout_height="58dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="304dp"
-            android:text="Step"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <Button
-            android:id="@+id/buttonStep2"
-            android:layout_width="157dp"
-            android:layout_height="55dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:text="Settings"
+            android:text="Step"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/circularProgressBarSu" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
