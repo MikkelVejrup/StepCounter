@@ -16,7 +16,7 @@ import com.ix.dm.stepcounter.R
 import com.ix.dm.stepcounter.databinding.FragmentMainBinding
 import com.ix.dm.stepcounter.other.STEPNUMBER
 import com.ix.dm.stepcounter.util.Constant
-
+import java.time.LocalDateTime
 
 
 class MainFragment : Fragment() , SensorEventListener {
@@ -65,6 +65,8 @@ class MainFragment : Fragment() , SensorEventListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+
 
 
 
