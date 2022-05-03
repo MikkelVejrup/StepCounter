@@ -14,10 +14,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import com.ix.dm.stepcounter.R
 import com.ix.dm.stepcounter.databinding.ActivityMainBinding
 import com.ix.dm.stepcounter.other.*
+import com.ix.dm.stepcounter.ui.fragment.MainFragment
+import com.ix.dm.stepcounter.ui.fragment.SettingsFragment
 import com.ix.dm.stepcounter.util.Constant
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -25,12 +30,14 @@ class MainActivity : AppCompatActivity() {
 
 
     private lateinit var mBinding: ActivityMainBinding
-
+    var currentFragment: Fragment? = null
 
     override fun onResume() {
         stopService(Intent(this, MyService::class.java))
         super.onResume()
     }
+
+
 
     @SuppressLint("ServiceCast")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +47,13 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
+        if (savedInstanceState == null) {
+            val fragmentTransaction = supportFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.main_fragment, MainFragment())
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
+        }
+
     }
 
 
@@ -47,6 +61,27 @@ class MainActivity : AppCompatActivity() {
         ContextCompat.startForegroundService(this, Intent(this, MyService::class.java))
         super.onStop()
     }
+    fun Settings(view: View){
+
+
+
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.main_fragment, SettingsFragment())
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+
+    }
+
+    fun overview(view: View){
+
+
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.main_fragment, MainFragment())
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+
+    }
+
 
 }
 

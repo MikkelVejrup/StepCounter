@@ -29,7 +29,7 @@ class MainFragment : Fragment() , SensorEventListener {
     private var totalStep = 0f
     private var previousTotalStep = 0f
     private var stepsResetByLongPress = false //FOR DATABASE TEST
-    private var manualSetSteps = "0"
+    private var manualSetSteps = 250f
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -45,6 +45,8 @@ class MainFragment : Fragment() , SensorEventListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
 
        mBinding = FragmentMainBinding.inflate(inflater,container,false).apply {
            executePendingBindings()
@@ -132,15 +134,14 @@ class MainFragment : Fragment() , SensorEventListener {
         mBinding.txtStepCount.setOnLongClickListener {
             stepsResetByLongPress = true //FOR DATABASE TEST
 
-            previousTotalStep = totalStep //FOR DATABASE TEST (commented out)
-
+            //previousTotalStep = totalStep //FOR DATABASE TEST (commented out)
             mBinding.txtStepCount.text = manualSetSteps
             mBinding.circularProgressBar.apply {
-                setProgressWithAnimation(0f) //FOR DATABASE TEST
+                setProgressWithAnimation(344f) //FOR DATABASE TEST
             }
 
             mBinding.circularProgressBarMo.apply {
-                setProgressWithAnimation(123f) //FOR DATABASE TEST
+                setProgressWithAnimation(0f) //FOR DATABASE TEST
             }
 
             mBinding.circularProgressBarTu.apply {

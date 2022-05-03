@@ -12,10 +12,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import com.ix.dm.stepcounter.R
 import com.ix.dm.stepcounter.databinding.FragmentMainBinding
 import com.ix.dm.stepcounter.other.STEPNUMBER
 import com.ix.dm.stepcounter.util.Constant
-
+import java.time.LocalDateTime
 
 
 class MainFragment : Fragment() , SensorEventListener {
@@ -33,13 +34,21 @@ class MainFragment : Fragment() , SensorEventListener {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
+        loadData()
         super.onResume()
         running = true
+
         val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
 
         sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
 
 
+    }
+
+    override fun onPause() {
+        saveDate()
+        super.onPause()
+        saveDate()
     }
 
 
@@ -59,6 +68,8 @@ class MainFragment : Fragment() , SensorEventListener {
 
 
 
+
+
         mBinding.circularProgressBar.apply {
             setProgressWithAnimation(0f)
         }
@@ -71,6 +82,9 @@ class MainFragment : Fragment() , SensorEventListener {
         sensorManager = requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
         super.onViewCreated(view, savedInstanceState)
+
+
+
     }
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
 
@@ -158,6 +172,10 @@ class MainFragment : Fragment() , SensorEventListener {
 
     private fun loadData() {
         previousTotalStep = Constant.getSharePref(requireContext()).getFloat(STEPNUMBER, 0f)
+    }
+
+    fun settings (){
+
     }
 
 
