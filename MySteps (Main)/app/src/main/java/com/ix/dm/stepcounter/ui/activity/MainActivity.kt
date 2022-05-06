@@ -26,7 +26,10 @@ import com.ix.dm.stepcounter.other.STEPNUMBER
 import com.ix.dm.stepcounter.util.Constant
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityMainBinding
@@ -66,6 +69,7 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
     }
 
+
 }
 
 class MyService : Service(), SensorEventListener {
@@ -94,11 +98,18 @@ class MyService : Service(), SensorEventListener {
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onSensorChanged(event: SensorEvent?) {
+
         if (running)
             totalStep = event!!.values[0]
         val currentSteps = totalStep.toInt() - previousTotalStep.toInt()
         Constant.editor(this).putFloat(STEPNUMBER,previousTotalStep).apply()
+
+
+
+
+
     }
+
 
     override fun onBind(intent: Intent?): IBinder? {
         return null

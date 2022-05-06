@@ -34,6 +34,9 @@ class MainFragment : Fragment() , SensorEventListener {
     private var manualSetSteps = 250f
 
 
+
+
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
         super.onResume()
@@ -60,10 +63,12 @@ class MainFragment : Fragment() , SensorEventListener {
             setProgressWithAnimation(0f)}
 
         val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("MM-dd HH:mm:ss")
-        val formatted = current.format(formatter)
+        val formatter = DateTimeFormatter.ofPattern("dd")
+        val currentday = current.format(formatter)
 
-        mBinding.Time.text = ("$formatted")
+
+        mBinding.Time.text = ("$currentday")
+
 
 
 
@@ -73,6 +78,17 @@ class MainFragment : Fragment() , SensorEventListener {
         resetDatabase()
         detectDateChange()
         sensorManager = requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager
+
+        if (totalStep < 0f)
+            totalStep = 0f
+            previousTotalStep = 0f
+        if (previousTotalStep < 0f)
+            totalStep = 0f
+            previousTotalStep = 0f
+        if (totalStep < previousTotalStep)
+            totalStep = 0f
+            previousTotalStep = 0f
+
 
         super.onViewCreated(view, savedInstanceState)
     }
@@ -184,8 +200,13 @@ class MainFragment : Fragment() , SensorEventListener {
     }
 
 
+
+
     private fun saveDate() {
         Constant.editor(requireContext()).putFloat(STEPNUMBER, previousTotalStep).apply()
+
+
+
     }
 
     private fun loadData() {
