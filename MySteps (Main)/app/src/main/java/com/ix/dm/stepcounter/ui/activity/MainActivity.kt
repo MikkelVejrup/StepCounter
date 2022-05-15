@@ -13,26 +13,22 @@ import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
-import android.util.Log.d
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.room.Room
 import com.ix.dm.stepcounter.database.AppDatabase
-import com.ix.dm.stepcounter.database.User
-import com.ix.dm.stepcounter.database.UserDao
 import com.ix.dm.stepcounter.databinding.ActivityMainBinding
 import com.ix.dm.stepcounter.other.STEPNUMBER
 import com.ix.dm.stepcounter.util.Constant
 import kotlinx.android.synthetic.main.activity_main.*
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.*
+import com.ix.dm.stepcounter.database.User
 
 
-class MainActivity : AppCompatActivity() {
+
+open class MainActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityMainBinding
+    //protected lateinit var databaseMainObject: AppDatabase
+    //protected lateinit var currentUser: User
 
     override fun onResume() {
         stopService(Intent(this, MyService::class.java))
@@ -47,10 +43,24 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
+        /*
+        databaseMainObject = AppDatabase.getAppDatabase(this)!!
+        if (databaseMainObject.userDao().countUsers() == 0) {
+            currentUser = User(
+                uid = 1,
+                dayCode = "",
+                stepsCounted = 0,
+                stepDayGoal = 2500)
+            databaseMainObject.userDao().insert(currentUser)
+        } else {
+            currentUser = databaseMainObject.userDao().user!!
+        }
+        */
+
         //ROOM database setup
-        val database = Room.databaseBuilder(this, AppDatabase::class.java,"Step_Database"
-        )   .allowMainThreadQueries()
-            .build()
+        //val database = Room.databaseBuilder(this, AppDatabase::class.java,"Step_Database"
+        //)   .allowMainThreadQueries()
+        //    .build()
 
         //Inserting a user, depending on the date
         //val currentTime: Date = Calendar.getInstance().getTime() //Gets current date
@@ -98,7 +108,6 @@ class MyService : Service(), SensorEventListener {
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onSensorChanged(event: SensorEvent?) {
-
         if (running)
             totalStep = event!!.values[0]
         val currentSteps = totalStep.toInt() - previousTotalStep.toInt()

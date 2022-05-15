@@ -7,5 +7,6 @@ import androidx.room.PrimaryKey
 data class User(
     @PrimaryKey(autoGenerate = true) val uid: Int = 0,
     val dayCode: String = "",
-    val stepsCounted: Int = 0
+    val stepsCounted: Int = 0,
+    val stepDayGoal: Int = 0
 )
