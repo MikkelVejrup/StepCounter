@@ -103,11 +103,6 @@ class MyService : Service(), SensorEventListener {
             totalStep = event!!.values[0]
         val currentSteps = totalStep.toInt() - previousTotalStep.toInt()
         Constant.editor(this).putFloat(STEPNUMBER,previousTotalStep).apply()
-
-
-
-
-
     }
 
 

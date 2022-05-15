@@ -7,6 +7,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.room.Room
 import com.ix.dm.stepcounter.database.AppDatabase
+import com.ix.dm.stepcounter.database.User
 import com.ix.dm.stepcounter.databinding.FragmentMainBinding
 import com.ix.dm.stepcounter.other.STEPNUMBER
 import com.ix.dm.stepcounter.util.Constant
@@ -32,10 +34,7 @@ class MainFragment : Fragment() , SensorEventListener {
     private var previousTotalStep = 0f
     private var stepsResetByLongPress = false //FOR DATABASE TEST
     private var manualSetSteps = 250f
-
-
-
-
+    private var detectedDateChange : Boolean = false
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
@@ -55,23 +54,23 @@ class MainFragment : Fragment() , SensorEventListener {
            executePendingBindings()
        }
         return mBinding.root
+
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mBinding.circularProgressBar.apply {
             setProgressWithAnimation(0f)}
 
+        //Displaying current DAY in a textview-----------------------------------
         val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("dd")
+        val formatter = DateTimeFormatter.ofPattern("dd. MMM")
         val currentday = current.format(formatter)
+        mBinding.Time.text = ("$currentday") //Displaying current date in corner
+        //-----------------------------------------------------------------------
 
-
-        mBinding.Time.text = ("$currentday")
-
-
-
-
+        timer()
         loadData()
         resetSteps()
         addStepsManuel()
@@ -89,9 +88,78 @@ class MainFragment : Fragment() , SensorEventListener {
             totalStep = 0f
             previousTotalStep = 0f
 
-
         super.onViewCreated(view, savedInstanceState)
     }
+
+    var run = true //set it to false if you want to stop the timer
+    var mHandler: Handler = Handler()
+
+    fun timer() { //Displays current time "Live" in a textView by updating it all the time
+        Thread(object : Runnable {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun run() {
+                var savedTime = ""
+                while (run) {
+                    try {
+                        Thread.sleep(1000)
+                        mHandler.post(Runnable {
+                            val current = LocalDateTime.now()
+                            val formatter = DateTimeFormatter.ofPattern("HH:mm")
+                            val currentTime = current.format(formatter)
+                            savedTime = currentTime
+                            mBinding.TimeLive.text = ("$currentTime") //Displaying current date in corner
+
+                            detectTimeChange() //runs the time checker to see if specific time is reached for reset etc...
+                        })
+                    } catch (e: Exception) {
+                    }
+                }
+            }
+        }).start()
+    }
+
+    private fun detectTimeChange() {
+        //Function to check when time changes to specified value
+        val inputStr: String = mBinding.TimeLive.text.toString()
+        val detectVal = "14:40"
+
+        if (inputStr == detectVal) {
+            detectedDateChange = true
+            mBinding.TimeChanged.text = ("$detectedDateChange")
+            //Then also a function should prompt the DATABASE to save the current step count for the
+            // Current day, and also reset total steps to '0' again
+            // remember to set "checkVal = false" again to allow next change to be checked
+
+        } /*else {
+            detectedDateChange = false
+            mBinding.TimeChanged.text = ("$detectedDateChange")
+        }*/
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun detectDateChange() {
+        val currentTime: String = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date())
+
+        val c = Calendar.getInstance()
+
+        d("TestTime","time? ${currentTime}") //used for LogCat in order to see what is saved
+    }
+
+    private fun saveDayInDBAfterChange() {
+        val database = Room.databaseBuilder(requireActivity().applicationContext, AppDatabase::class.java,"Step_Database"
+        )   .allowMainThreadQueries()
+            .build()
+
+        database.userDao().insert(User(1,))
+    }
+
+    private fun getCurrentDayCode() {
+        //This function should get the current dayCode for use in the DB user
+
+    }
+
+
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
 
     }
@@ -123,20 +191,8 @@ class MainFragment : Fragment() , SensorEventListener {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun detectDateChange() {
-        val currentTime: String = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date())
-
-        val c = Calendar.getInstance()
-
-
-
-        d("TestTime","time? ${currentTime}") //used for LogCat in order to see what it holds
-    }
-
     private fun addStepsManuel() {
         mBinding.buttonStep.setOnClickListener {
-
 
             if (running)
                 if (stepsResetByLongPress) { //FOR DATABASE TEST
@@ -200,19 +256,11 @@ class MainFragment : Fragment() , SensorEventListener {
     }
 
 
-
-
     private fun saveDate() {
         Constant.editor(requireContext()).putFloat(STEPNUMBER, previousTotalStep).apply()
-
-
-
     }
 
     private fun loadData() {
         previousTotalStep = Constant.getSharePref(requireContext()).getFloat(STEPNUMBER, 0f)
     }
-
-
-
 }
