@@ -301,26 +301,6 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/circularProgressBarSu" />
 
-        <Button
-            android:id="@+id/buttonStep"
-            android:layout_width="91dp"
-            android:layout_height="58dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="16dp"
-            android:text="Step"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/circularProgressBarSu" />
-
-        <Button
-            android:id="@+id/resetDB"
-            android:layout_width="91dp"
-            android:layout_height="58dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="reset DB"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonStep" />
-
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
@@ -448,6 +428,19 @@
             android:textColor="@color/white"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView5"
             app:layout_constraintStart_toEndOf="@+id/textView5" />
+
+        <Spinner
+            android:id="@+id/dropdown_menu"
+            android:layout_width="93dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="28dp"
+            android:spinnerMode="dropdown"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/editTextNumber4"
+            app:layout_constraintTop_toBottomOf="@+id/circularProgressBarTh"
+            app:layout_constraintVertical_bias="0.496" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

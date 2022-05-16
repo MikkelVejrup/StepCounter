@@ -7,15 +7,17 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Build
-import android.os.Bundle
+
 import android.os.Handler
 import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.room.Room
+import com.ix.dm.stepcounter.R
 import com.ix.dm.stepcounter.database.AppDatabase
 import com.ix.dm.stepcounter.database.User
 import com.ix.dm.stepcounter.databinding.FragmentMainBinding
@@ -26,6 +28,11 @@ import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+
 
 
 class MainFragment : Fragment() , SensorEventListener {
@@ -81,9 +88,7 @@ class MainFragment : Fragment() , SensorEventListener {
         timer()
         loadData()
         resetSteps()
-        addStepsManuel()
-        //resetDatabase()
-        //detectDateChange()
+        detectDateChange()
         sensorManager = requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager
         mBinding.txtTotalStepCount.text = ("$dailyStepGoal") //Sets the default stepGoal
 
@@ -282,49 +287,14 @@ class MainFragment : Fragment() , SensorEventListener {
         }
     }
 
-    private fun resetDatabase() {
-        //Resets all data saved in database
-        val databaseMainObject = Room.databaseBuilder(requireActivity().applicationContext, AppDatabase::class.java,"Step_Database"
-        )   .allowMainThreadQueries()
-            .build()
-
-        mBinding.resetDB.setOnClickListener {
-            databaseMainObject.userDao().deleteAll()
-
-            //val dayStorage = database.userDao().getAllDays()
 
 
-            //Search for "dayTest" in LogCat to find this
-            //d("dayTest","all days stored? ${dayStorage}") //used for LogCat in order to see what it holds
-        }
-    }
-
-    private fun addStepsManuel() {
-        mBinding.buttonStep.setOnClickListener {
-
-            if (running)
-                if (stepsResetByLongPress) { //FOR DATABASE TEST
-                    totalStep = manualSetSteps.toFloat()
-                    previousTotalStep = 0f
-                } else {
-                    totalStep += 1
-                    }
-            stepsResetByLongPress = false //FOR DATABASE TEST
-
-            val currentSteps = totalStep.toInt() - previousTotalStep.toInt()
-            mBinding.txtStepCount.text = ("$currentSteps")
-
-            mBinding.circularProgressBar.apply {
-                setProgressWithAnimation(currentSteps.toFloat())
-            }
-        }
-    }
 
     private fun resetSteps() {
         mBinding.txtStepCount.setOnLongClickListener {
             stepsResetByLongPress = true
 
-            //previousTotalStep = totalStep //FOR DATABASE TEST (commented out)
+            previousTotalStep = totalStep //FOR DATABASE TEST (commented out)
             mBinding.txtStepCount.text = ("${manualSetSteps.toInt()}")
             mBinding.circularProgressBar.apply {
                 setProgressWithAnimation(manualSetSteps)
