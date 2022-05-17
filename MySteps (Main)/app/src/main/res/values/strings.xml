@@ -7,4 +7,6 @@
         <item>JavaScript</item>
         <item>VisualBasic</item>
     </string-array>
+    <string name="age">25</string>
+    <string name="StepGoal">10000</string>
 </resources>

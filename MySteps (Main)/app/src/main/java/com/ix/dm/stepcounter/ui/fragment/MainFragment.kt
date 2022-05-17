@@ -6,13 +6,11 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Build
-
 import android.os.Handler
 import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.room.Room
@@ -24,11 +22,20 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 import android.os.Bundle
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.EditText
 import androidx.lifecycle.ViewModelProvider
 import com.ix.dm.stepcounter.database.UserViewModel
 
+import android.widget.Spinner
+import androidx.databinding.DataBindingUtil.setContentView
+import com.ix.dm.stepcounter.R
 
 class MainFragment : Fragment() , SensorEventListener {
+
+
+
     lateinit var mBinding:FragmentMainBinding
     lateinit var mUserViewModel: UserViewModel
 
@@ -37,9 +44,13 @@ class MainFragment : Fragment() , SensorEventListener {
     private var totalStep = 0f
     private var previousTotalStep = 0f
     private var stepsResetByLongPress : Boolean = false //FOR DATABASE TEST
-    private var manualSetSteps = 250f
+    private var manualSetSteps = 0f
     private var detectedDateChange : Boolean = false
     private var dailyStepGoal : Int = 2500
+
+
+
+
 
     //Instantiating DB object
     /*val databaseMainObject = Room.databaseBuilder(requireActivity().applicationContext, AppDatabase::class.java,"Step_Database"
@@ -83,10 +94,14 @@ class MainFragment : Fragment() , SensorEventListener {
         mBinding.Time.text = ("$currentday") //Displaying current date in corner
         //-----------------------------------------------------------------------
 
+
+
         timer()
         loadData()
         resetSteps()
         detectDateChange()
+        calStep()
+        setStepGoal()
         sensorManager = requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager
         mBinding.txtTotalStepCount.text = ("$dailyStepGoal") //Sets the default stepGoal
 
@@ -99,6 +114,8 @@ class MainFragment : Fragment() , SensorEventListener {
         if (totalStep < previousTotalStep)
             totalStep = 0f
             previousTotalStep = 0f
+
+
 
         super.onViewCreated(view, savedInstanceState)
     }
@@ -290,8 +307,6 @@ class MainFragment : Fragment() , SensorEventListener {
     }
 
 
-
-
     private fun resetSteps() {
         mBinding.txtStepCount.setOnLongClickListener {
             stepsResetByLongPress = true
@@ -335,6 +350,66 @@ class MainFragment : Fragment() , SensorEventListener {
         }
     }
 
+    private fun calStep(){
+        mBinding.bCalStep.setOnClickListener {
+            val age = mBinding.age.text.toString().toInt()
+            val aLvl = mBinding.ALvl.text.toString().toInt()
+
+            if (aLvl == 1) {
+                if (age < 20){
+                    mBinding.txtcalSteps.text = ("6000")}
+
+                if (age >= 20){
+                    mBinding.txtcalSteps.text = ("3000")}
+            }
+
+            if (aLvl == 2) {
+                if (age <= 6){
+                    mBinding.txtcalSteps.text = ("10000")}
+
+                if (age > 6 || age < 11){
+                    mBinding.txtcalSteps.text = ("13000")}
+
+                if (age >= 11 || age < 20){
+                    mBinding.txtcalSteps.text = ("10000")}
+
+                if (age >= 20 || age < 65){
+                    mBinding.txtcalSteps.text = ("7000")}
+
+                if (age >= 65){
+                    mBinding.txtcalSteps.text = ("7000")}
+            }
+
+            if (aLvl == 3) {
+                if (age <= 6){
+                    mBinding.txtcalSteps.text = ("14500")}
+
+                if (age > 6 || age < 11){
+                    mBinding.txtcalSteps.text = ("15500")}
+
+                if (age >= 11 || age < 20){
+                    mBinding.txtcalSteps.text = ("12500")}
+
+                if (age >= 20 || age < 65) {
+                    mBinding.txtcalSteps.text = ("11500")}
+
+                if (age >= 65) {
+                    mBinding.txtcalSteps.text = ("1050")}
+
+            }
+
+
+        }
+    }
+
+    private fun setStepGoal(){
+        mBinding.bStepGoal.setOnClickListener {
+
+            dailyStepGoal = mBinding.txtStepCount.text.toString().toInt()
+
+        }
+
+    }
 
     private fun saveDate() {
         Constant.editor(requireContext()).putFloat(STEPNUMBER, previousTotalStep).apply()
