@@ -11,35 +11,31 @@ import androidx.room.RoomDatabase
 
 //The data that is going to be used, comes from the Class, "User"
 @Database(entities = [User::class], version = 1, exportSchema = false)
-abstract class AppDatabase : RoomDatabase() {
+abstract class UserDatabase: RoomDatabase() {
 
     abstract fun userDao(): UserDao
-/*
-    companion object {
+
+    companion object{
         // Singleton to prevent multiple instances from existing
         @Volatile
-        private var INSTANCE: AppDatabase? = null
+        private var INSTANCE: UserDatabase? = null
 
-        fun getAppDatabase(context: Context): AppDatabase? {
+        fun getDatabase(context: Context): UserDatabase{
             //If instance already exists, return it
             val tempInstance = INSTANCE
-            if (tempInstance != null) {
+            if (tempInstance != null){
                 return tempInstance
             }
-
-
-            synchronized(this) {
+            synchronized(this){
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    AppDatabase::class.java,
-                    "Step_Database"
-                ).build()
+                    UserDatabase::class.java,
+                    "user_Database"
+                    ).allowMainThreadQueries().build()
                 INSTANCE = instance
-            }
 
-            return INSTANCE
+                return instance
+            }
         }
     }
-    */
-
 }

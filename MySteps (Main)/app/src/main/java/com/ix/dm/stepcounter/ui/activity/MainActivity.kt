@@ -16,13 +16,14 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.ix.dm.stepcounter.database.AppDatabase
+import androidx.lifecycle.lifecycleScope
+import com.ix.dm.stepcounter.R
+import com.ix.dm.stepcounter.database.UserDatabase
 import com.ix.dm.stepcounter.databinding.ActivityMainBinding
 import com.ix.dm.stepcounter.other.STEPNUMBER
 import com.ix.dm.stepcounter.util.Constant
 import kotlinx.android.synthetic.main.activity_main.*
-import com.ix.dm.stepcounter.database.User
-
+import kotlinx.coroutines.launch
 
 
 open class MainActivity : AppCompatActivity() {
@@ -38,6 +39,7 @@ open class MainActivity : AppCompatActivity() {
     @SuppressLint("ServiceCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //setContentView(R.layout.activity_main)
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
 
@@ -71,14 +73,12 @@ open class MainActivity : AppCompatActivity() {
 
         //Search for "dayTest" in LogCat to find this
         //d("dayTest","all days stored? ${dayStorage}") //used for LogCat in order to see what it holds
-
     }
 
     override fun onStop() {
         ContextCompat.startForegroundService(this, Intent(this, MyService::class.java))
         super.onStop()
     }
-
 
 }
 

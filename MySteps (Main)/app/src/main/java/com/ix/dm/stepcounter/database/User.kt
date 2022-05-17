@@ -5,8 +5,10 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "StepTable")
 data class User(
-    @PrimaryKey(autoGenerate = true) val uid: Int = 0,
+    @PrimaryKey(autoGenerate = true)
+    val uid: Int,
     val dayCode: String = "",
     val stepsCounted: Int = 0,
     val stepDayGoal: Int = 0
 )
+

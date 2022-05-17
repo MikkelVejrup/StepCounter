@@ -1,9 +1,7 @@
 package com.ix.dm.stepcounter.database
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.lifecycle.LiveData
+import androidx.room.*
 
 
 @Dao
@@ -11,28 +9,36 @@ interface UserDao {
     @get:Query("SELECT * FROM StepTable where uid = 1")
     val user: User?
 
-    @Insert //Inserting/Creating new user/day
-    fun insert(user: User)
+    @Insert(onConflict = OnConflictStrategy.IGNORE) //Inserting/Creating new user/day
+    suspend fun insert(user: User)
 
     //Counts all users in Database
-    @Query("SELECT COUNT(*) from StepTable")
+    @Query("SELECT COUNT(*) FROM StepTable")
     fun countUsers(): Int
 
+    //Deletes all days in Database
+    @Query("DELETE FROM StepTable")
+    fun deleteAll()
+
+    //=== GETTERS ==========================================================================
     //Gets all users/Days stored
-    @Query("SELECT * from StepTable")
-    fun getAllDays(): List<User>
+    @Query("SELECT * FROM StepTable")
+    fun getAllDays(): LiveData<List<User>>
 
     //Gets specific user from Database
-    @Query("SELECT * from StepTable WHERE dayCode = :dayCode")
+    @Query("SELECT * FROM StepTable WHERE dayCode = :dayCode")
     fun getSpecificUser(dayCode: String): User
 
     //Gets specific user stepsTaken
-    @Query("SELECT * from StepTable WHERE dayCode = :dayCode")
+    @Query("SELECT * FROM StepTable WHERE dayCode = :dayCode")
     fun getSpecificUserSteps(dayCode: String): Float
 
-    //Deletes all days in Database
-    @Query("DELETE from StepTable")
-    fun deleteAll()
+    @Query("SELECT dayCode FROM StepTable WHERE uid = :uid")
+    fun getSpecificUserDayCode(uid: Int): String
+
+    @Query("SELECT uid FROM StepTable WHERE dayCode = :daycode")
+    fun getSpecificUserID(daycode: String): Int
+    //======================================================================================
 
     //=== Updating user variables ==========================================================
     @Update //Updates everything in the user

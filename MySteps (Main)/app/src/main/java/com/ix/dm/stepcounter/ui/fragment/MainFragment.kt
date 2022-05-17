@@ -1,6 +1,5 @@
 package com.ix.dm.stepcounter.ui.fragment
 
-import android.R
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -17,26 +16,22 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.room.Room
-import com.ix.dm.stepcounter.R
-import com.ix.dm.stepcounter.database.AppDatabase
-import com.ix.dm.stepcounter.database.User
 import com.ix.dm.stepcounter.databinding.FragmentMainBinding
 import com.ix.dm.stepcounter.other.STEPNUMBER
-import com.ix.dm.stepcounter.ui.activity.MainActivity
 import com.ix.dm.stepcounter.util.Constant
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-
+import androidx.lifecycle.ViewModelProvider
+import com.ix.dm.stepcounter.database.UserViewModel
 
 
 class MainFragment : Fragment() , SensorEventListener {
     lateinit var mBinding:FragmentMainBinding
+    lateinit var mUserViewModel: UserViewModel
+
     private var sensorManager: SensorManager? = null
     private var running : Boolean = false
     private var totalStep = 0f
@@ -65,10 +60,13 @@ class MainFragment : Fragment() , SensorEventListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
        mBinding = FragmentMainBinding.inflate(inflater,container,false).apply {
            executePendingBindings()
        }
+
+        d("UserLogDEBUG","mUserViewModel initializing")
+        mUserViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+
         return mBinding.root
     }
 
@@ -107,7 +105,6 @@ class MainFragment : Fragment() , SensorEventListener {
 
     var run = true //set it to false if you want to stop the timer
     var mHandler: Handler = Handler()
-
     fun timer() { //Displays current time "Live" in a textView by updating it all the time
         Thread(object : Runnable {
             @RequiresApi(Build.VERSION_CODES.O)
@@ -137,7 +134,7 @@ class MainFragment : Fragment() , SensorEventListener {
 
         val c = Calendar.getInstance()
 
-        d("TestTime","time? ${currentTime}") //used for LogCat in order to see what is saved
+        d("UserLogDEBUG","time? ${currentTime}") //used for LogCat in order to see what is saved
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -161,6 +158,7 @@ class MainFragment : Fragment() , SensorEventListener {
         }*/
     }
 
+    /*
     private fun saveDayInDBAfterChange() {
         val databaseMainObject = Room.databaseBuilder(requireActivity().applicationContext, AppDatabase::class.java,"Step_Database"
         )   .allowMainThreadQueries()
@@ -176,7 +174,9 @@ class MainFragment : Fragment() , SensorEventListener {
         d("dayChangeTest","new day stored? ${dayStorage}") //used for LogCat in order to see what it holds
         //- - - - - - - - - - - - - - - - - - - -
     }
+     */
 
+    /*
     private fun fillInPrevDaysFromDB() {
         //This function shall go through the DB object and update all UI objects
         // this is done by a for loop going through the whole DB and then updating
@@ -205,7 +205,9 @@ class MainFragment : Fragment() , SensorEventListener {
         mBinding.circularProgressBarSu.apply {
             setProgressWithAnimation(databaseMainObject.userDao().getSpecificUserSteps("Su")) }
     }
+    */
 
+    /*
     private fun initializeDatabaseStorage() {
         //This function should create every user/day that can hold a value
         // by using the initialized DB object
@@ -233,7 +235,7 @@ class MainFragment : Fragment() , SensorEventListener {
         val dayStorage = databaseMainObject.userDao().getAllDays()
         //Search for "dayInsertion" in LogCat to find days inserted
         d("dayInsertion","all days inserted?: ${dayStorage}") //used for LogCat in order to see what it holds
-    }
+    }*/
 
 
     private fun getCurrentDayCode(): String {
