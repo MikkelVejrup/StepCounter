@@ -27,7 +27,6 @@ import com.ix.dm.stepcounter.database.UserViewModel
 class MainFragment : Fragment() , SensorEventListener {
     lateinit var mBinding:FragmentMainBinding
     lateinit var mUserViewModel: UserViewModel
-
     private var sensorManager: SensorManager? = null
     private var running : Boolean = false
     private var totalStep = 0f
@@ -287,12 +286,10 @@ class MainFragment : Fragment() , SensorEventListener {
 
     private fun resetSteps() {
         mBinding.txtStepCount.setOnLongClickListener {
-            stepsResetByLongPress = true
-
-            previousTotalStep = totalStep //FOR DATABASE TEST (commented out)
-            mBinding.txtStepCount.text = ("${manualSetSteps.toInt()}")
+            previousTotalStep = totalStep
+            mBinding.txtStepCount.text = "0"
             mBinding.circularProgressBar.apply {
-                setProgressWithAnimation(manualSetSteps)
+                setProgressWithAnimation(0f)
             }
             saveDate()
             true
