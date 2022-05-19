@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.ix.dm.stepcounter.databinding.FragmentMainBinding
 import com.ix.dm.stepcounter.other.STEPNUMBER
+import com.ix.dm.stepcounter.other.STEPGOALNUMBER
 import com.ix.dm.stepcounter.util.Constant
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -77,7 +78,7 @@ class MainFragment : Fragment() , SensorEventListener {
 
         timer()
         loadData()
-        resetSteps()
+        //resetSteps()
         detectDateChange()
         calStep()
         setStepGoal()
@@ -349,20 +350,27 @@ class MainFragment : Fragment() , SensorEventListener {
     private fun setStepGoal(){
         mBinding.bStepGoal.setOnClickListener {
 
-            val goal = mBinding.txtcalSteps.text.toString().toFloat()
-            mBinding.txtTotalStepCount.text = ("${goal.toInt()}")
+            dailyStepGoal = mBinding.txtcalSteps.text.toString().toFloat().toInt()
+
+            mBinding.txtTotalStepCount.text = ("$dailyStepGoal")
 
             mBinding.circularProgressBar.apply {
-                progressMax = goal
+                progressMax = dailyStepGoal.toFloat()
             }
         }
+
+        saveDate()
     }
+
 
     private fun saveDate() {
         Constant.editor(requireContext()).putFloat(STEPNUMBER, previousTotalStep).apply()
+        Constant.editor(requireContext()).putFloat(STEPGOALNUMBER, dailyStepGoal.toFloat()).apply()
     }
+
 
     private fun loadData() {
         previousTotalStep = Constant.getSharePref(requireContext()).getFloat(STEPNUMBER, 0f)
+        dailyStepGoal = Constant.getSharePref(requireContext()).getFloat(STEPGOALNUMBER, 0f).toInt()
     }
 }
