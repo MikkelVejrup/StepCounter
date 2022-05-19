@@ -44,7 +44,7 @@ class MainFragment : Fragment() , SensorEventListener {
     private var totalStep = 0f
     private var previousTotalStep = 0f
     private var stepsResetByLongPress : Boolean = false //FOR DATABASE TEST
-    private var manualSetSteps = 0f
+    private var manualSetSteps = 1000f
     private var detectedDateChange : Boolean = false
     private var dailyStepGoal : Int = 2500
 
@@ -405,7 +405,12 @@ class MainFragment : Fragment() , SensorEventListener {
     private fun setStepGoal(){
         mBinding.bStepGoal.setOnClickListener {
 
-            dailyStepGoal = mBinding.txtStepCount.text.toString().toInt()
+            val goal = mBinding.txtcalSteps.text.toString().toFloat()
+            mBinding.txtTotalStepCount.text = ("${goal.toInt()}")
+
+            mBinding.circularProgressBar.apply {
+                progressMax = goal
+            }
 
         }
 

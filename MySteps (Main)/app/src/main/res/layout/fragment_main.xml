@@ -176,6 +176,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:text="10000"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@+id/circularProgressBar"
@@ -416,20 +417,23 @@
             android:id="@+id/textView7"
             android:layout_width="170dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
             android:text="Low 1, mid 2 and high 3"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/ALvl"
-            app:layout_constraintStart_toEndOf="@+id/txtcalSteps" />
+            app:layout_constraintStart_toEndOf="@+id/ALvl" />
 
         <Button
             android:id="@+id/bCalStep"
             android:layout_width="170dp"
             android:layout_height="48dp"
-            android:layout_marginStart="4dp"
+            android:layout_marginTop="16dp"
             android:text="Cal steps"
-            app:layout_constraintBaseline_toBaselineOf="@+id/txtcalSteps"
-            app:layout_constraintStart_toEndOf="@+id/txtcalSteps" />
+            app:layout_constraintEnd_toStartOf="@+id/bStepGoal"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtcalSteps" />
 
         <Button
             android:id="@+id/bStepGoal"
@@ -437,8 +441,20 @@
             android:layout_height="48dp"
 
             android:text="Set step goal"
-            app:layout_constraintStart_toStartOf="@+id/bCalStep"
-            app:layout_constraintTop_toBottomOf="@+id/bCalStep" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/bCalStep"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/bCalStep" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:text="/"
+            android:textColor="@color/white"
+            app:layout_constraintBaseline_toBaselineOf="@+id/txtTotalStepCount"
+            app:layout_constraintEnd_toStartOf="@+id/txtTotalStepCount" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
