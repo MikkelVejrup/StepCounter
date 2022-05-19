@@ -14,20 +14,12 @@ class UserRepository(private val userDao: UserDao) {
         return userDao.countUsers()
     }
 
-    fun getSpecificUser(daycode: String): User {
-        return userDao.getSpecificUser(daycode)
+    fun getSpecificUserByDay(daycode: String): User {
+        return userDao.getSpecificUserByDay(daycode)
     }
 
-    fun getSpecificUserDayCode(uid: Int): String {
-        return userDao.getSpecificUserDayCode(uid)
-    }
-
-    fun getSpecificUserID(daycode: String): Int {
-        return userDao.getSpecificUserID(daycode)
-    }
-
-    fun getSpecificUserSteps(daycode: String): Float {
-        return userDao.getSpecificUserSteps(daycode)
+    fun getSpecificUserById(uid: Int): User {
+        return userDao.getSpecificUserById(uid)
     }
 
     fun deleteAll() {

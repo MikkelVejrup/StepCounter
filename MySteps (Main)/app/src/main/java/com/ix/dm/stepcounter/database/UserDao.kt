@@ -26,18 +26,12 @@ interface UserDao {
     fun getAllDays(): LiveData<List<User>>
 
     //Gets specific user from Database
+    @Query("SELECT * FROM StepTable WHERE uid = :uid")
+    fun getSpecificUserById(uid: Int): User
+
+    //Gets specific user from Database
     @Query("SELECT * FROM StepTable WHERE dayCode = :dayCode")
-    fun getSpecificUser(dayCode: String): User
-
-    //Gets specific user stepsTaken
-    @Query("SELECT * FROM StepTable WHERE dayCode = :dayCode")
-    fun getSpecificUserSteps(dayCode: String): Float
-
-    @Query("SELECT dayCode FROM StepTable WHERE uid = :uid")
-    fun getSpecificUserDayCode(uid: Int): String
-
-    @Query("SELECT uid FROM StepTable WHERE dayCode = :daycode")
-    fun getSpecificUserID(daycode: String): Int
+    fun getSpecificUserByDay(dayCode: String): User
     //======================================================================================
 
     //=== Updating user variables ==========================================================

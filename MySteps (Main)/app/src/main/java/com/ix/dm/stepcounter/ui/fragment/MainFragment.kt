@@ -23,6 +23,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
+import com.ix.dm.stepcounter.database.User
 import com.ix.dm.stepcounter.database.UserViewModel
 
 class MainFragment : Fragment() , SensorEventListener {
@@ -58,7 +59,6 @@ class MainFragment : Fragment() , SensorEventListener {
            executePendingBindings()
        }
 
-        d("UserLogDEBUG","mUserViewModel initializing")
         mUserViewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
         return mBinding.root
@@ -82,6 +82,7 @@ class MainFragment : Fragment() , SensorEventListener {
         detectDateChange()
         calStep()
         setStepGoal()
+        resetSteps() //TEMP !
         sensorManager = requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
         if (totalStep < 0f)
@@ -135,105 +136,87 @@ class MainFragment : Fragment() , SensorEventListener {
     private fun detectTimeChange() {
         //Function to check when time changes to specified value
         val inputStr: String = mBinding.TimeLive.text.toString()
-        val detectVal = "00:00"
+        val detectVal = "17:05"
+        val clearVal = "16:06"
 
-        if (inputStr == detectVal) {
+        if (inputStr == clearVal) {
+                detectedDateChange = false //waiting for another change
+        }
+        if (inputStr == detectVal && !detectedDateChange) {
             detectedDateChange = true
             mBinding.TimeChanged.text = ("$detectedDateChange")
 
-            //Then also a function should prompt the DATABASE to save the current step count for the
-            // Current day, and also reset total steps to '0' again
-            // remember to set "checkVal = false" again to allow next change to be checked
-            //saveDayInDBAfterChange()
-
-        } /*else {
-            detectedDateChange = false
-            mBinding.TimeChanged.text = ("$detectedDateChange")
-        }*/
+            saveDayInDBAfterChange()
+        }
     }
 
-    /*
+
     private fun saveDayInDBAfterChange() {
-        val databaseMainObject = Room.databaseBuilder(requireActivity().applicationContext, AppDatabase::class.java,"Step_Database"
-        )   .allowMainThreadQueries()
-            .build()
+        //Saves day in database by updating existing user by daycode
+        // then also prompts an update of the previous days progressbars
+        d("UserLogDEBUG","Updating the day with current steps")
+        val thisUser : User = mUserViewModel.getSpecificUserByDay(getCurrentDayCode())
 
-        databaseMainObject.userDao().updateStepsCounted(getCurrentStepsTaken(),getCurrentDayCode())
+        //test before
+        val userStepsBefore = thisUser.stepsCounted
+        d("UserLogDEBUG","userSteps Before: $userStepsBefore")
+        //===========
+
+        thisUser.stepsCounted = getCurrentStepsTaken()
+
+        mUserViewModel.update(thisUser)
+
+        //test after
+        val thisUser2 : User = mUserViewModel.getSpecificUserByDay(getCurrentDayCode())
+        val userStepsAfter = thisUser2.stepsCounted
+        d("UserLogDEBUG","userSteps After: $userStepsAfter")
+        //===========
+
+        fillInPrevDaysFromDB()
         resetDayilySteps()
-        detectedDateChange = false //Now program is ready for next time the clock says "00:00"
-
-        //Test section of user update - - - - -
-        val dayStorage = databaseMainObject.userDao().getAllDays()
-        //Search for "dayTest" in LogCat to find this
-        d("dayChangeTest","new day stored? ${dayStorage}") //used for LogCat in order to see what it holds
-        //- - - - - - - - - - - - - - - - - - - -
     }
-     */
 
-    /*
+
     private fun fillInPrevDaysFromDB() {
         //This function shall go through the DB object and update all UI objects
         // this is done by a for loop going through the whole DB and then updating
         // the corresponding circularProgressBar
-        val databaseMainObject = Room.databaseBuilder(requireActivity().applicationContext, AppDatabase::class.java,"Step_Database"
-        )   .allowMainThreadQueries()
-            .build()
+
         mBinding.circularProgressBarMo.apply {
-            setProgressWithAnimation(databaseMainObject.userDao().getSpecificUserSteps("Mo")) }
+            setProgressWithAnimation(dbGetStepsFromDay("Mo").toFloat()) }
 
         mBinding.circularProgressBarTu.apply {
-            setProgressWithAnimation(databaseMainObject.userDao().getSpecificUserSteps("Tu")) }
+            setProgressWithAnimation(dbGetStepsFromDay("Tu").toFloat()) }
 
         mBinding.circularProgressBarWe.apply {
-            setProgressWithAnimation(databaseMainObject.userDao().getSpecificUserSteps("We")) }
+            setProgressWithAnimation(dbGetStepsFromDay("We").toFloat()) }
 
         mBinding.circularProgressBarTh.apply {
-            setProgressWithAnimation(databaseMainObject.userDao().getSpecificUserSteps("Th")) }
+            setProgressWithAnimation(dbGetStepsFromDay("Th").toFloat()) }
 
         mBinding.circularProgressBarFr.apply {
-            setProgressWithAnimation(databaseMainObject.userDao().getSpecificUserSteps("Fr")) }
+            setProgressWithAnimation(dbGetStepsFromDay("Fr").toFloat()) }
 
         mBinding.circularProgressBarSa.apply {
-            setProgressWithAnimation(databaseMainObject.userDao().getSpecificUserSteps("Sa")) }
+            setProgressWithAnimation(dbGetStepsFromDay("Sa").toFloat()) }
 
         mBinding.circularProgressBarSu.apply {
-            setProgressWithAnimation(databaseMainObject.userDao().getSpecificUserSteps("Su")) }
+            setProgressWithAnimation(dbGetStepsFromDay("Su").toFloat()) }
     }
-    */
 
-    /*
-    private fun initializeDatabaseStorage() {
-        //This function should create every user/day that can hold a value
-        // by using the initialized DB object
-        val databaseMainObject = Room.databaseBuilder(requireActivity().applicationContext, AppDatabase::class.java,"Step_Database"
-        )   .allowMainThreadQueries()
-            .build()
+    private fun dbGetStepsFromDay(dayCode : String) : Int {
+        //Returns the walked currently walked steps for current day
+        val thisUser = mUserViewModel.getSpecificUserByDay(dayCode)
+        val steps = thisUser.stepsCounted
 
-        val dayCodeArray = arrayOf<String>("Mo","Tu","We","Th","Fr","Sa","Su")
-        var i : Int = 0
-        for (days in dayCodeArray.withIndex()) {
-            databaseMainObject.userDao().insert(
-                User(
-                    dayCode = dayCodeArray[i],
-                    stepsCounted = 0,
-                    stepDayGoal = dailyStepGoal
-                )
-            )
-            //Printing inserted user (MIGHT BE DELETED LATER)
-            val currentDay : User = databaseMainObject.userDao().getSpecificUser(dayCodeArray[i])
-            print(currentDay)
+        val stepsinfo = "${thisUser.stepsCounted} steps taken for ${thisUser.dayCode}"
+        d("UserLogDEBUG","dbGetStepsFromDay says: $stepsinfo")
 
-            i++
-        }
-        //For test purposes
-        val dayStorage = databaseMainObject.userDao().getAllDays()
-        //Search for "dayInsertion" in LogCat to find days inserted
-        d("dayInsertion","all days inserted?: ${dayStorage}") //used for LogCat in order to see what it holds
-    }*/
-
+        return steps
+    }
 
     private fun getCurrentDayCode(): String {
-        //This function should get the current dayCode for use in the DB user
+        //This function gets the current dayCode (used for updating DB)
         val calendar = Calendar.getInstance()
         val day = calendar[Calendar.DAY_OF_WEEK]
         var dayCodeTMP = ""
@@ -247,7 +230,6 @@ class MainFragment : Fragment() , SensorEventListener {
             Calendar.SATURDAY   -> {dayCodeTMP = "Sa"}
             Calendar.SUNDAY     -> {dayCodeTMP = "Su"}
         }
-
         return dayCodeTMP
     }
 
@@ -270,6 +252,7 @@ class MainFragment : Fragment() , SensorEventListener {
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
     }
+
 
 
     override fun onSensorChanged(event: SensorEvent?) {
@@ -357,11 +340,6 @@ class MainFragment : Fragment() , SensorEventListener {
                 progressMax = dailyStepGoal.toFloat()
             }
             saveDate()
-
-            //USING SAME BUTTON FOR DB TEST - DONT MIND ME
-
-            //============================================
-
         }
     }
 

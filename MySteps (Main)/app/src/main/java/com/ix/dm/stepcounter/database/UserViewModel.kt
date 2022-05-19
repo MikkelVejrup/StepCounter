@@ -23,9 +23,9 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
         getAllDays = repository.getAllDays
 
         if (countUsers() == 0) {
-            d("UserLogDEBUG","trying to initialize DB!---------")
+            d("UserLogDEBUG","Initializing DB!--------------")
             initializeDatabaseStorage()
-            d("UserLogDEBUG","DB was initialized!?----------")
+            d("UserLogDEBUG","DB was initialized!-----------")
         } else {
             d("UserLogDEBUG","DB already initialized")
         }
@@ -37,20 +37,20 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
-    private fun countUsers(): Int {
+    fun countUsers(): Int {
         return repository.countUsers()
     }
 
-    private fun getSpecificUser(daycode: String): User {
-        return repository.getSpecificUser(daycode)
+    fun update(user: User?) {
+        repository.update(user)
     }
 
-    private fun getSpecificUserDayCode(uid: Int): String {
-        return repository.getSpecificUserDayCode(uid)
+    fun getSpecificUserById(uid: Int): User {
+        return repository.getSpecificUserById(uid)
     }
 
-    private fun getSpecificUserID(daycode: String): Int {
-        return repository.getSpecificUserID(daycode)
+    fun getSpecificUserByDay(daycode: String): User {
+        return repository.getSpecificUserByDay(daycode)
     }
 
     private fun initializeDatabaseStorage() {
@@ -67,15 +67,8 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
             val tempUser = User(uid, dayCode, stepsCounted, stepDayGoal)
 
             insert(tempUser)
-            //d("UserLogDEBUG","inserted user nr. = ${i}")
-
-            //logging inserted user (MIGHT BE DELETED LATER)
-            val currentDay = getSpecificUserDayCode(uid = i)
-            val currentDay2 = getSpecificUserID(daycode = dayCodeArray[i])
-            d("UserLogDEBUG","Day inserted was: ${currentDay2} - inserted at $i")
 
             i++
-
         }
     }
 }

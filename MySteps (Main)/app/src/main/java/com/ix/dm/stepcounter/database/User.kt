@@ -8,7 +8,7 @@ data class User(
     @PrimaryKey(autoGenerate = true)
     val uid: Int,
     val dayCode: String = "",
-    val stepsCounted: Int = 0,
+    var stepsCounted: Int = 0,
     val stepDayGoal: Int = 0
 )
 
