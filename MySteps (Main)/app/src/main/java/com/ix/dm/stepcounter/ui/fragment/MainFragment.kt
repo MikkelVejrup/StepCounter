@@ -36,6 +36,7 @@ class MainFragment : Fragment() , SensorEventListener {
     private var manualSetSteps = 1000f
     private var detectedDateChange : Boolean = false
     private var dailyStepGoal : Int = 2500
+    val preDay = 0
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -46,6 +47,9 @@ class MainFragment : Fragment() , SensorEventListener {
         val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
 
         mBinding.txtTotalStepCount.text = ("$dailyStepGoal") //Sets the default stepGoal
+        mBinding.circularProgressBar.apply {
+            progressMax = dailyStepGoal.toFloat()
+        }
 
         sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
     }
@@ -72,13 +76,16 @@ class MainFragment : Fragment() , SensorEventListener {
 
         //Displaying current DAY in a textview-----------------------------------
         val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("dd. MMM")
+        val formatter = DateTimeFormatter.ofPattern("dd")
         val currentday = current.format(formatter)
         mBinding.Time.text = ("$currentday") //Displaying current date in corner
         //-----------------------------------------------------------------------
 
+
+
         timer()
         loadData()
+        resetSteps()
         detectDateChange()
         calStep()
         setStepGoal()
@@ -281,6 +288,13 @@ class MainFragment : Fragment() , SensorEventListener {
         mBinding.circularProgressBar.apply {
             setProgressWithAnimation(currentSteps.toFloat())
         }
+
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("dd")
+        val currentday = current.format(formatter)
+        mBinding.Time.text = ("$currentday") //Displaying current date in corner
+
+        
     }
 
 
@@ -289,7 +303,7 @@ class MainFragment : Fragment() , SensorEventListener {
             previousTotalStep = totalStep
             mBinding.txtStepCount.text = "0"
             mBinding.circularProgressBar.apply {
-                setProgressWithAnimation(0f)
+                setProgressWithAnimation(1000f)
             }
             saveDate()
             true

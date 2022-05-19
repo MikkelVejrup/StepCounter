@@ -11,22 +11,27 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.os.IBinder
 import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.ix.dm.stepcounter.R
 import com.ix.dm.stepcounter.database.UserDatabase
 import com.ix.dm.stepcounter.databinding.ActivityMainBinding
+import com.ix.dm.stepcounter.other.STEPGOALNUMBER
 import com.ix.dm.stepcounter.other.STEPNUMBER
 import com.ix.dm.stepcounter.ui.fragment.MainFragment
 import com.ix.dm.stepcounter.util.Constant
 import kotlinx.android.synthetic.main.activity_main.*
 
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 open class MainActivity : AppCompatActivity() {
@@ -110,6 +115,7 @@ class MyService : Service(), SensorEventListener {
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+
         try {
             running  =true
             val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
@@ -132,7 +138,10 @@ class MyService : Service(), SensorEventListener {
             totalStep = event!!.values[0]
         val currentSteps = totalStep.toInt() - previousTotalStep.toInt()
         Constant.editor(this).putFloat(STEPNUMBER,previousTotalStep).apply()
+
+
     }
+
 
 
     override fun onBind(intent: Intent?): IBinder? {
