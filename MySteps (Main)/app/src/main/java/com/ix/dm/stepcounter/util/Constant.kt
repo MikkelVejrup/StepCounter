@@ -38,6 +38,7 @@ object Constant {
         Log.v("$TAG $tag", message!!)
     }
 
+
     fun getPermission(
         context: Context,
         permissions: ArrayList<String>,

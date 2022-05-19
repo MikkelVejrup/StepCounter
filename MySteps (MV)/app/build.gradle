@@ -48,6 +48,7 @@ android {
     dataBinding {
         enabled = true
     }
+    namespace 'com.ix.dm.stepcounter'
 
 }
 

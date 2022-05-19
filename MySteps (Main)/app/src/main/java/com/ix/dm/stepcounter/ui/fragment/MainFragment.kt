@@ -13,7 +13,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.room.Room
 import com.ix.dm.stepcounter.databinding.FragmentMainBinding
 import com.ix.dm.stepcounter.other.STEPNUMBER
 import com.ix.dm.stepcounter.util.Constant
@@ -22,20 +21,10 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 import android.os.Bundle
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.EditText
 import androidx.lifecycle.ViewModelProvider
 import com.ix.dm.stepcounter.database.UserViewModel
 
-import android.widget.Spinner
-import androidx.databinding.DataBindingUtil.setContentView
-import com.ix.dm.stepcounter.R
-
 class MainFragment : Fragment() , SensorEventListener {
-
-
-
     lateinit var mBinding:FragmentMainBinding
     lateinit var mUserViewModel: UserViewModel
 
@@ -49,17 +38,9 @@ class MainFragment : Fragment() , SensorEventListener {
     private var dailyStepGoal : Int = 2500
 
 
-
-
-
-    //Instantiating DB object
-    /*val databaseMainObject = Room.databaseBuilder(requireActivity().applicationContext, AppDatabase::class.java,"Step_Database"
-    )   .allowMainThreadQueries()
-        .build()
-    */
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
+        loadData()
         super.onResume()
         running = true
         val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
@@ -95,7 +76,6 @@ class MainFragment : Fragment() , SensorEventListener {
         //-----------------------------------------------------------------------
 
 
-
         timer()
         loadData()
         resetSteps()
@@ -114,8 +94,6 @@ class MainFragment : Fragment() , SensorEventListener {
         if (totalStep < previousTotalStep)
             totalStep = 0f
             previousTotalStep = 0f
-
-
 
         super.onViewCreated(view, savedInstanceState)
     }
@@ -316,35 +294,6 @@ class MainFragment : Fragment() , SensorEventListener {
             mBinding.circularProgressBar.apply {
                 setProgressWithAnimation(manualSetSteps)
             }
-
-            mBinding.circularProgressBarMo.apply {
-                setProgressWithAnimation(0f)
-            }
-
-            mBinding.circularProgressBarTu.apply {
-                setProgressWithAnimation(0f)
-            }
-
-            mBinding.circularProgressBarWe.apply {
-                setProgressWithAnimation(0f)
-            }
-
-            mBinding.circularProgressBarTh.apply {
-                setProgressWithAnimation(0f)
-            }
-
-            mBinding.circularProgressBarFr.apply {
-                setProgressWithAnimation(0f)
-            }
-
-            mBinding.circularProgressBarSa.apply {
-                setProgressWithAnimation(0f)
-            }
-
-            mBinding.circularProgressBarSu.apply {
-                setProgressWithAnimation(0f)
-            }
-
             saveDate()
             true
         }
@@ -397,8 +346,6 @@ class MainFragment : Fragment() , SensorEventListener {
                     mBinding.txtcalSteps.text = ("1050")}
 
             }
-
-
         }
     }
 
@@ -411,9 +358,7 @@ class MainFragment : Fragment() , SensorEventListener {
             mBinding.circularProgressBar.apply {
                 progressMax = goal
             }
-
         }
-
     }
 
     private fun saveDate() {
