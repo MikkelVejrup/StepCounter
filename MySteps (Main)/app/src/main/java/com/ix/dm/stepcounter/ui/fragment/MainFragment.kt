@@ -38,7 +38,6 @@ class MainFragment : Fragment() , SensorEventListener {
 
     lateinit var mBinding:FragmentMainBinding
     lateinit var mUserViewModel: UserViewModel
-
     private var sensorManager: SensorManager? = null
     private var running : Boolean = false
     private var totalStep = 0f
@@ -60,6 +59,7 @@ class MainFragment : Fragment() , SensorEventListener {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
+        loadData()
         super.onResume()
         running = true
         val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
@@ -309,13 +309,14 @@ class MainFragment : Fragment() , SensorEventListener {
 
     private fun resetSteps() {
         mBinding.txtStepCount.setOnLongClickListener {
+            previousTotalStep = totalStep
+            mBinding.txtStepCount.text = "0"
+            mBinding.circularProgressBar.apply {
+                setProgressWithAnimation(0f)
+            }
+
             stepsResetByLongPress = true
 
-            previousTotalStep = totalStep //FOR DATABASE TEST (commented out)
-            mBinding.txtStepCount.text = ("${manualSetSteps.toInt()}")
-            mBinding.circularProgressBar.apply {
-                setProgressWithAnimation(manualSetSteps)
-            }
 
             mBinding.circularProgressBarMo.apply {
                 setProgressWithAnimation(0f)

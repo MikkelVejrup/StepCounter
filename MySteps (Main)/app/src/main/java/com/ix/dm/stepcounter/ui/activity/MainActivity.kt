@@ -13,6 +13,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -21,8 +22,10 @@ import com.ix.dm.stepcounter.R
 import com.ix.dm.stepcounter.database.UserDatabase
 import com.ix.dm.stepcounter.databinding.ActivityMainBinding
 import com.ix.dm.stepcounter.other.STEPNUMBER
+import com.ix.dm.stepcounter.ui.fragment.MainFragment
 import com.ix.dm.stepcounter.util.Constant
 import kotlinx.android.synthetic.main.activity_main.*
+
 import kotlinx.coroutines.launch
 
 
@@ -44,6 +47,13 @@ open class MainActivity : AppCompatActivity() {
         setContentView(mBinding.root)
 
         setSupportActionBar(toolbar)
+
+        if (savedInstanceState == null) {
+            val fragmentTransaction = supportFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.fragment_nav_host_auth, MainFragment())
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
+        }
 
         /*
         databaseMainObject = AppDatabase.getAppDatabase(this)!!
@@ -78,6 +88,16 @@ open class MainActivity : AppCompatActivity() {
     override fun onStop() {
         ContextCompat.startForegroundService(this, Intent(this, MyService::class.java))
         super.onStop()
+    }
+
+    fun overview(view: View){
+
+
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fragment_nav_host_auth, MainFragment())
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+
     }
 
 }
