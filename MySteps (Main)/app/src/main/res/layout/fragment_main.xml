@@ -405,7 +405,7 @@
             android:layout_height="28dp"
             android:ems="10"
             android:inputType="number"
-            android:text="10000"
+            android:text="0"
             android:textAlignment="textStart"
             android:textColor="@color/white"
             android:textIsSelectable="false"

@@ -26,7 +26,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.ix.dm.stepcounter.database.UserViewModel
 
 class MainFragment : Fragment() , SensorEventListener {
-    lateinit var mBinding:FragmentMainBinding
+    lateinit var mBinding: FragmentMainBinding
     lateinit var mUserViewModel: UserViewModel
     private var sensorManager: SensorManager? = null
     private var running : Boolean = false
@@ -44,6 +44,8 @@ class MainFragment : Fragment() , SensorEventListener {
         super.onResume()
         running = true
         val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+
+        mBinding.txtTotalStepCount.text = ("$dailyStepGoal") //Sets the default stepGoal
 
         sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
     }
@@ -75,15 +77,12 @@ class MainFragment : Fragment() , SensorEventListener {
         mBinding.Time.text = ("$currentday") //Displaying current date in corner
         //-----------------------------------------------------------------------
 
-
         timer()
         loadData()
-        //resetSteps()
         detectDateChange()
         calStep()
         setStepGoal()
         sensorManager = requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        mBinding.txtTotalStepCount.text = ("$dailyStepGoal") //Sets the default stepGoal
 
         if (totalStep < 0f)
             totalStep = 0f
@@ -357,9 +356,13 @@ class MainFragment : Fragment() , SensorEventListener {
             mBinding.circularProgressBar.apply {
                 progressMax = dailyStepGoal.toFloat()
             }
-        }
+            saveDate()
 
-        saveDate()
+            //USING SAME BUTTON FOR DB TEST - DONT MIND ME
+
+            //============================================
+
+        }
     }
 
 
@@ -371,6 +374,6 @@ class MainFragment : Fragment() , SensorEventListener {
 
     private fun loadData() {
         previousTotalStep = Constant.getSharePref(requireContext()).getFloat(STEPNUMBER, 0f)
-        dailyStepGoal = Constant.getSharePref(requireContext()).getFloat(STEPGOALNUMBER, 0f).toInt()
+        dailyStepGoal = Constant.getSharePref(requireContext()).getFloat(STEPGOALNUMBER, dailyStepGoal.toFloat()).toInt()
     }
 }
