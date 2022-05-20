@@ -112,13 +112,20 @@ class MyService : Service(), SensorEventListener {
     private var running = false
     private var totalStep = 0f
     private var previousTotalStep = 0f
+    var preDay = 0
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("dd")
+        val currentday = current.format(formatter)
+        preDay = currentday.toInt()
+
         try {
             running  =true
             val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+
 
             sensorManager?.registerListener(this,stepSensor, SensorManager.SENSOR_DELAY_UI)
         } catch (e: Exception) {
@@ -134,13 +141,36 @@ class MyService : Service(), SensorEventListener {
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onSensorChanged(event: SensorEvent?) {
+
+
         if (running)
             totalStep = event!!.values[0]
         val currentSteps = totalStep.toInt() - previousTotalStep.toInt()
+
+        //-------Reset by day change------------------//
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("dd")
+        val currentday = current.format(formatter)
+        val day = currentday.toInt()
+
+        if (day != preDay){
+            totalStep = 0f
+            previousTotalStep = totalStep
+            preDay = day
+
+            Constant.editor(this).putFloat(STEPNUMBER,previousTotalStep).apply()
+
+        }
+        //-------------------------------------------//
+
+
+
         Constant.editor(this).putFloat(STEPNUMBER,previousTotalStep).apply()
 
 
     }
+
+
 
 
 

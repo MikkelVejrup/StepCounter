@@ -37,7 +37,8 @@ class MainFragment : Fragment() , SensorEventListener {
     private var manualSetSteps = 1000f
     private var detectedDateChange : Boolean = false
     private var dailyStepGoal : Int = 2500
-    val preDay = 0
+    var preDay = 0
+
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -79,6 +80,7 @@ class MainFragment : Fragment() , SensorEventListener {
         val formatter = DateTimeFormatter.ofPattern("dd")
         val currentday = current.format(formatter)
         mBinding.Time.text = ("$currentday") //Displaying current date in corner
+        preDay = currentday.toInt()
         //-----------------------------------------------------------------------
 
 
@@ -254,6 +256,7 @@ class MainFragment : Fragment() , SensorEventListener {
         mBinding.circularProgressBar.apply {
             setProgressWithAnimation(0f)
         }
+        saveDate()
     }
 
 
@@ -263,6 +266,19 @@ class MainFragment : Fragment() , SensorEventListener {
 
 
     override fun onSensorChanged(event: SensorEvent?) {
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("dd")
+        val currentday = current.format(formatter)
+        mBinding.Time.text = ("$currentday") //Displaying current date in corner
+        val day = currentday.toInt()
+
+        if (day != preDay){
+            resetDayilySteps()
+            preDay = day
+        }
+
+
+
         if (running)
             totalStep = event!!.values[0]
         val currentSteps = totalStep.toInt() - previousTotalStep.toInt()
@@ -272,12 +288,7 @@ class MainFragment : Fragment() , SensorEventListener {
             setProgressWithAnimation(currentSteps.toFloat())
         }
 
-        val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("dd")
-        val currentday = current.format(formatter)
-        mBinding.Time.text = ("$currentday") //Displaying current date in corner
 
-        
     }
 
 
