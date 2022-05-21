@@ -17,11 +17,11 @@ import com.ix.dm.stepcounter.databinding.FragmentMainBinding
 import com.ix.dm.stepcounter.other.STEPNUMBER
 import com.ix.dm.stepcounter.other.STEPGOALNUMBER
 import com.ix.dm.stepcounter.util.Constant
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 import android.os.Bundle
+import android.os.Looper
 import androidx.lifecycle.ViewModelProvider
 import com.ix.dm.stepcounter.database.User
 import com.ix.dm.stepcounter.database.UserViewModel
@@ -37,8 +37,7 @@ class MainFragment : Fragment() , SensorEventListener {
     private var manualSetSteps = 1000f
     private var detectedDateChange : Boolean = false
     private var dailyStepGoal : Int = 2500
-    var preDay = 0
-
+    private var preDay = 0
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -83,15 +82,19 @@ class MainFragment : Fragment() , SensorEventListener {
         preDay = currentday.toInt()
         //-----------------------------------------------------------------------
 
+        Handler(Looper.getMainLooper()).postDelayed({
+            //This is a delayed caller, specific used for DB late initializing
+            // of progressBars values.
+            fillInPrevDaysFromDB() //Updates all history progressBars with values from DB
+        }, 2500)
 
 
         timer()
         loadData()
         resetSteps()
-        detectDateChange()
+        //detectDateChange()
         calStep()
         setStepGoal()
-        resetSteps() //TEMP !
         sensorManager = requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
         if (totalStep < 0f)
@@ -122,7 +125,7 @@ class MainFragment : Fragment() , SensorEventListener {
                             val currentTime = current.format(formatter)
                             mBinding.TimeLive.text = ("$currentTime") //Displaying current date in corner
 
-                            detectTimeChange() //runs the time checker to see if specific time is reached for reset etc...
+                            //detectTimeChange() //runs the time checker to see if specific time is reached for reset etc...
                         })
                     } catch (e: Exception) {
                     }
@@ -132,6 +135,7 @@ class MainFragment : Fragment() , SensorEventListener {
     }
 
 
+    /*
     @RequiresApi(Build.VERSION_CODES.O)
     private fun detectDateChange() {
         val currentTime: String = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date())
@@ -158,59 +162,75 @@ class MainFragment : Fragment() , SensorEventListener {
             saveDayInDBAfterChange()
         }
     }
+    */
 
 
     private fun saveDayInDBAfterChange() {
         //Saves day in database by updating existing user by daycode
         // then also prompts an update of the previous days progressbars
-        d("UserLogDEBUG","Updating the day with current steps")
+        d("UserLogDEBUG","DB updates the current day after date change")
         val thisUser : User = mUserViewModel.getSpecificUserByDay(getCurrentDayCode())
 
-        //test before
-        val userStepsBefore = thisUser.stepsCounted
-        d("UserLogDEBUG","userSteps Before: $userStepsBefore")
+        //test value before
+        //val userStepsBefore = thisUser.stepsCounted
+        //d("UserLogDEBUG","userSteps Before: $userStepsBefore")
         //===========
 
-        thisUser.stepsCounted = getCurrentStepsTaken()
+        val currentStepsTMP = totalStep.toInt() - previousTotalStep.toInt() //Calculates current steps taken
+        thisUser.stepsCounted = currentStepsTMP //Updating the steps variable for the user
 
-        mUserViewModel.update(thisUser)
+        mUserViewModel.update(thisUser) //finally updates the whole user in the DB
 
-        //test after
-        val thisUser2 : User = mUserViewModel.getSpecificUserByDay(getCurrentDayCode())
-        val userStepsAfter = thisUser2.stepsCounted
-        d("UserLogDEBUG","userSteps After: $userStepsAfter")
+        //test value after
+        //val thisUser2 : User = mUserViewModel.getSpecificUserByDay(getCurrentDayCode())
+        //val userStepsAfter = thisUser2.stepsCounted
+        //d("UserLogDEBUG","userSteps After: $userStepsAfter")
         //===========
 
-        fillInPrevDaysFromDB()
-        resetDayilySteps()
+        fillInPrevDaysFromDB() //Updates every field in week track history
+        resetDailySteps() //Ends by resetting the counted steps, to start over
     }
 
 
     private fun fillInPrevDaysFromDB() {
-        //This function shall go through the DB object and update all UI objects
+        //This function goes through the DB object and update all UI objects
         // this is done by a for loop going through the whole DB and then updating
         // the corresponding circularProgressBar
 
         mBinding.circularProgressBarMo.apply {
-            setProgressWithAnimation(dbGetStepsFromDay("Mo").toFloat()) }
+            setProgressWithAnimation(dbGetStepsFromDay("Mo").toFloat())
+            progressMax = dailyStepGoal.toFloat()
+        }
 
         mBinding.circularProgressBarTu.apply {
-            setProgressWithAnimation(dbGetStepsFromDay("Tu").toFloat()) }
+            setProgressWithAnimation(dbGetStepsFromDay("Tu").toFloat())
+            progressMax = dailyStepGoal.toFloat()
+        }
 
         mBinding.circularProgressBarWe.apply {
-            setProgressWithAnimation(dbGetStepsFromDay("We").toFloat()) }
+            setProgressWithAnimation(dbGetStepsFromDay("We").toFloat())
+            progressMax = dailyStepGoal.toFloat()
+        }
 
         mBinding.circularProgressBarTh.apply {
-            setProgressWithAnimation(dbGetStepsFromDay("Th").toFloat()) }
+            setProgressWithAnimation(dbGetStepsFromDay("Th").toFloat())
+            progressMax = dailyStepGoal.toFloat()
+        }
 
         mBinding.circularProgressBarFr.apply {
-            setProgressWithAnimation(dbGetStepsFromDay("Fr").toFloat()) }
+            setProgressWithAnimation(dbGetStepsFromDay("Fr").toFloat())
+            progressMax = dailyStepGoal.toFloat()
+        }
 
         mBinding.circularProgressBarSa.apply {
-            setProgressWithAnimation(dbGetStepsFromDay("Sa").toFloat()) }
+            setProgressWithAnimation(dbGetStepsFromDay("Sa").toFloat())
+            progressMax = dailyStepGoal.toFloat()
+        }
 
         mBinding.circularProgressBarSu.apply {
-            setProgressWithAnimation(dbGetStepsFromDay("Su").toFloat()) }
+            setProgressWithAnimation(dbGetStepsFromDay("Su").toFloat())
+            progressMax = dailyStepGoal.toFloat()
+        }
     }
 
     private fun dbGetStepsFromDay(dayCode : String) : Int {
@@ -242,6 +262,7 @@ class MainFragment : Fragment() , SensorEventListener {
         return dayCodeTMP
     }
 
+    /*
     private fun getCurrentStepsTaken(): Int {
         var currentStepsTMP: Int = 0
 
@@ -249,14 +270,15 @@ class MainFragment : Fragment() , SensorEventListener {
 
         return currentStepsTMP
     }
+    */
 
-    private fun resetDayilySteps() {
+    private fun resetDailySteps() {
         previousTotalStep = totalStep
         mBinding.txtStepCount.text = ("${0}")
         mBinding.circularProgressBar.apply {
             setProgressWithAnimation(0f)
         }
-        saveDate()
+        saveData()
     }
 
 
@@ -273,11 +295,10 @@ class MainFragment : Fragment() , SensorEventListener {
         val day = currentday.toInt()
 
         if (day != preDay){
-            resetDayilySteps()
+            saveDayInDBAfterChange() //This also resets Daily steps
+            //resetDailySteps()
             preDay = day
         }
-
-
 
         if (running)
             totalStep = event!!.values[0]
@@ -287,8 +308,6 @@ class MainFragment : Fragment() , SensorEventListener {
         mBinding.circularProgressBar.apply {
             setProgressWithAnimation(currentSteps.toFloat())
         }
-
-
     }
 
 
@@ -297,9 +316,9 @@ class MainFragment : Fragment() , SensorEventListener {
             previousTotalStep = totalStep
             mBinding.txtStepCount.text = "0"
             mBinding.circularProgressBar.apply {
-                setProgressWithAnimation(1000f)
+                setProgressWithAnimation(0f)
             }
-            saveDate()
+            saveData()
             true
         }
     }
@@ -354,6 +373,7 @@ class MainFragment : Fragment() , SensorEventListener {
         }
     }
 
+
     private fun setStepGoal(){
         mBinding.bStepGoal.setOnClickListener {
 
@@ -364,14 +384,14 @@ class MainFragment : Fragment() , SensorEventListener {
             mBinding.circularProgressBar.apply {
                 progressMax = dailyStepGoal.toFloat()
             }
-            saveDate()
+            saveData()
         }
     }
 
 
-    private fun saveDate() {
+    private fun saveData() {
         Constant.editor(requireContext()).putFloat(STEPNUMBER, previousTotalStep).apply()
-        Constant.editor(requireContext()).putFloat(STEPGOALNUMBER, dailyStepGoal.toFloat()).apply()
+        Constant.editor(requireContext()).putFloat(STEPGOALNUMBER, dailyStepGoal.toFloat() ).apply()
     }
 
 

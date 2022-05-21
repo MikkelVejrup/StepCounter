@@ -1,43 +1,43 @@
 package com.ix.dm.stepcounter.ui.activity
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.app.Dialog
 import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.os.Build
-import android.os.Bundle
-import android.os.Handler
-import android.os.IBinder
+import android.os.*
 import android.util.Log
+import android.util.Log.d
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import com.ix.dm.stepcounter.R
-import com.ix.dm.stepcounter.database.UserDatabase
 import com.ix.dm.stepcounter.databinding.ActivityMainBinding
-import com.ix.dm.stepcounter.other.STEPGOALNUMBER
 import com.ix.dm.stepcounter.other.STEPNUMBER
 import com.ix.dm.stepcounter.ui.fragment.MainFragment
 import com.ix.dm.stepcounter.util.Constant
 import kotlinx.android.synthetic.main.activity_main.*
 
-import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
 open class MainActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityMainBinding
-    //protected lateinit var databaseMainObject: AppDatabase
-    //protected lateinit var currentUser: User
+    private var ACTIVITY_RECOGNITION_CODE = 1;
 
     override fun onResume() {
         stopService(Intent(this, MyService::class.java))
@@ -53,42 +53,48 @@ open class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
+        //Waiting a little while before app checks if App permissions is good to go
+        Handler(Looper.getMainLooper()).postDelayed({
+            checkSensorPermission(Manifest.permission.ACTIVITY_RECOGNITION, ACTIVITY_RECOGNITION_CODE)
+        }, 2500)
+
         if (savedInstanceState == null) {
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.fragment_nav_host_auth, MainFragment())
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
         }
-
-        /*
-        databaseMainObject = AppDatabase.getAppDatabase(this)!!
-        if (databaseMainObject.userDao().countUsers() == 0) {
-            currentUser = User(
-                uid = 1,
-                dayCode = "",
-                stepsCounted = 0,
-                stepDayGoal = 2500)
-            databaseMainObject.userDao().insert(currentUser)
-        } else {
-            currentUser = databaseMainObject.userDao().user!!
-        }
-        */
-
-        //ROOM database setup
-        //val database = Room.databaseBuilder(this, AppDatabase::class.java,"Step_Database"
-        //)   .allowMainThreadQueries()
-        //    .build()
-
-        //Inserting a user, depending on the date
-        //val currentTime: Date = Calendar.getInstance().getTime() //Gets current date
-        //val currentDay = android.text.format.DateFormat.format("EEEE", currentTime) //extracts current day name
-        //database.userDao().insert( User(dayCode = currentDay.toString(), stepsCounted = 321) )
-
-        //val dayStorage = database.userDao().getAllDays()
-
-        //Search for "dayTest" in LogCat to find this
-        //d("dayTest","all days stored? ${dayStorage}") //used for LogCat in order to see what it holds
     }
+
+    //Used to check wether or not, the Physical activity sensor has been granted
+    // permission to be used in the apps
+    private fun checkSensorPermission(permission:String,requestCode:Int) {
+        if (ContextCompat.checkSelfPermission(this@MainActivity, permission)
+            != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this@MainActivity, arrayOf(permission),requestCode)
+        } else {
+            Toast.makeText(this,"Internal Step Sensor is active",Toast.LENGTH_LONG).show()
+        }
+    }
+
+    //When calling the "requestPermission" function, this takes over and prompts for user input
+    // In order to make the app actually utilize the step counter properly!
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == ACTIVITY_RECOGNITION_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this@MainActivity, "Activity sensor Granted", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this@MainActivity, "Activity sensor Denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 
     override fun onStop() {
         ContextCompat.startForegroundService(this, Intent(this, MyService::class.java))
@@ -96,13 +102,10 @@ open class MainActivity : AppCompatActivity() {
     }
 
     fun overview(view: View){
-
-
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.fragment_nav_host_auth, MainFragment())
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
-
     }
 
 }
@@ -159,15 +162,10 @@ class MyService : Service(), SensorEventListener {
             preDay = day
 
             Constant.editor(this).putFloat(STEPNUMBER,previousTotalStep).apply()
-
         }
         //-------------------------------------------//
 
-
-
         Constant.editor(this).putFloat(STEPNUMBER,previousTotalStep).apply()
-
-
     }
 
 
@@ -192,5 +190,6 @@ class MyService : Service(), SensorEventListener {
 class MyPhoneReciver : BroadcastReceiver(){
     override fun onReceive(context: Context?, intent: Intent?) {
         ContextCompat.startForegroundService(context!!, Intent(context, MyService::class.java))
+        d("UserLogDEBUG","MyPhoneReciver Called......")
     }
 }
