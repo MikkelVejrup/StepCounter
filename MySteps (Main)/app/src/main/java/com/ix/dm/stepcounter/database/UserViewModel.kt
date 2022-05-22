@@ -10,6 +10,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.room.Room
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class UserViewModel(application: Application): AndroidViewModel(application) {
 
@@ -25,6 +27,7 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
         if (countUsers() == 0) {
             d("UserLogDEBUG","Initializing DB!--------------")
             initializeDatabaseStorage()
+            initializeDateOnStartup()
             d("UserLogDEBUG","DB was initialized!-----------")
         } else {
             d("UserLogDEBUG","DB already initialized")
@@ -70,5 +73,25 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
 
             i++
         }
+    }
+
+    private fun initializeDateOnStartup() {
+        //This function saves the current daycode on first startup
+        // Then it must be updated every time, a day change occurs
+        // stepsCounted is what must be updated
+
+        val uid = 0 //Room DB will generate auto ID Increment after first one
+        val dayCode: String = "DayChanger"
+
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("dd")
+        val currentday = current.format(formatter)
+        val stepsCounted: Int = currentday.toInt()
+
+        val stepDayGoal: Int = 9999 //Default value stepGoal
+
+        val tempUser = User(uid, dayCode, stepsCounted, stepDayGoal)
+
+        insert(tempUser)
     }
 }

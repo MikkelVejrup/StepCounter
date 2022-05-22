@@ -56,7 +56,7 @@ open class MainActivity : AppCompatActivity() {
         //Waiting a little while before app checks if App permissions is good to go
         Handler(Looper.getMainLooper()).postDelayed({
             checkSensorPermission(Manifest.permission.ACTIVITY_RECOGNITION, ACTIVITY_RECOGNITION_CODE)
-        }, 2500)
+        }, 1000)
 
         if (savedInstanceState == null) {
             val fragmentTransaction = supportFragmentManager.beginTransaction()
@@ -66,8 +66,8 @@ open class MainActivity : AppCompatActivity() {
         }
     }
 
-    //Used to check wether or not, the Physical activity sensor has been granted
-    // permission to be used in the apps
+    //Used to check whether or not, the Physical activity sensor has been granted
+    // permission to be used in the app
     private fun checkSensorPermission(permission:String,requestCode:Int) {
         if (ContextCompat.checkSelfPermission(this@MainActivity, permission)
             != PackageManager.PERMISSION_GRANTED) {
@@ -115,22 +115,22 @@ class MyService : Service(), SensorEventListener {
     private var running = false
     private var totalStep = 0f
     private var previousTotalStep = 0f
-    var preDay = 0
+    //var preDay = 0
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-
+        /*
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd")
         val currentday = current.format(formatter)
         preDay = currentday.toInt()
+        */
 
         try {
-            running  =true
+            running = true
             val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
-
-
             sensorManager?.registerListener(this,stepSensor, SensorManager.SENSOR_DELAY_UI)
+
         } catch (e: Exception) {
             Log.e("eee ERROR", e.message.toString())
         }
@@ -144,12 +144,11 @@ class MyService : Service(), SensorEventListener {
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onSensorChanged(event: SensorEvent?) {
-
-
         if (running)
             totalStep = event!!.values[0]
         val currentSteps = totalStep.toInt() - previousTotalStep.toInt()
 
+        /*
         //-------Reset by day change------------------//
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd")
@@ -164,6 +163,9 @@ class MyService : Service(), SensorEventListener {
             Constant.editor(this).putFloat(STEPNUMBER,previousTotalStep).apply()
         }
         //-------------------------------------------//
+        */
+
+
 
         Constant.editor(this).putFloat(STEPNUMBER,previousTotalStep).apply()
     }

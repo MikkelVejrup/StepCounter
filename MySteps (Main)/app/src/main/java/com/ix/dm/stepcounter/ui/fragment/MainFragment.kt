@@ -26,7 +26,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.ix.dm.stepcounter.database.User
 import com.ix.dm.stepcounter.database.UserViewModel
 
-//DANIEL WAS HERE !!!!!!
 
 class MainFragment : Fragment() , SensorEventListener {
     lateinit var mBinding: FragmentMainBinding
@@ -77,11 +76,18 @@ class MainFragment : Fragment() , SensorEventListener {
             setProgressWithAnimation(0f)}
 
         //Displaying current DAY in a textview-----------------------------------
+
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd")
         val currentday = current.format(formatter)
         mBinding.Time.text = ("$currentday") //Displaying current date in corner
-        preDay = currentday.toInt()
+        //preDay = currentday.toInt()
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            val dayChangeUser = mUserViewModel.getSpecificUserByDay("DayChanger")
+            val initialDay = dayChangeUser.stepsCounted
+            preDay = initialDay
+        }, 3000)
         //-----------------------------------------------------------------------
 
         Handler(Looper.getMainLooper()).postDelayed({
@@ -200,37 +206,37 @@ class MainFragment : Fragment() , SensorEventListener {
         // the corresponding circularProgressBar
 
         mBinding.circularProgressBarMo.apply {
-            setProgressWithAnimation(dbGetStepsFromDay("Mo").toFloat())
-            progressMax = dailyStepGoal.toFloat()
-        }
-
-        mBinding.circularProgressBarTu.apply {
             setProgressWithAnimation(dbGetStepsFromDay("Tu").toFloat())
             progressMax = dailyStepGoal.toFloat()
         }
 
-        mBinding.circularProgressBarWe.apply {
+        mBinding.circularProgressBarTu.apply {
             setProgressWithAnimation(dbGetStepsFromDay("We").toFloat())
             progressMax = dailyStepGoal.toFloat()
         }
 
-        mBinding.circularProgressBarTh.apply {
+        mBinding.circularProgressBarWe.apply {
             setProgressWithAnimation(dbGetStepsFromDay("Th").toFloat())
             progressMax = dailyStepGoal.toFloat()
         }
 
-        mBinding.circularProgressBarFr.apply {
+        mBinding.circularProgressBarTh.apply {
             setProgressWithAnimation(dbGetStepsFromDay("Fr").toFloat())
             progressMax = dailyStepGoal.toFloat()
         }
 
-        mBinding.circularProgressBarSa.apply {
+        mBinding.circularProgressBarFr.apply {
             setProgressWithAnimation(dbGetStepsFromDay("Sa").toFloat())
             progressMax = dailyStepGoal.toFloat()
         }
 
-        mBinding.circularProgressBarSu.apply {
+        mBinding.circularProgressBarSa.apply {
             setProgressWithAnimation(dbGetStepsFromDay("Su").toFloat())
+            progressMax = dailyStepGoal.toFloat()
+        }
+
+        mBinding.circularProgressBarSu.apply {
+            setProgressWithAnimation(dbGetStepsFromDay("Mo").toFloat())
             progressMax = dailyStepGoal.toFloat()
         }
     }
@@ -240,8 +246,8 @@ class MainFragment : Fragment() , SensorEventListener {
         val thisUser = mUserViewModel.getSpecificUserByDay(dayCode)
         val steps = thisUser.stepsCounted
 
-        val stepsinfo = "${thisUser.stepsCounted} steps taken for ${thisUser.dayCode}"
-        d("UserLogDEBUG","dbGetStepsFromDay says: $stepsinfo")
+        //val stepsinfo = "${thisUser.stepsCounted} steps taken for ${thisUser.dayCode}"
+        //d("UserLogDEBUG","dbGetStepsFromDay says: $stepsinfo")
 
         return steps
     }
@@ -294,13 +300,28 @@ class MainFragment : Fragment() , SensorEventListener {
         val formatter = DateTimeFormatter.ofPattern("dd")
         val currentday = current.format(formatter)
         mBinding.Time.text = ("$currentday") //Displaying current date in corner
-        val day = currentday.toInt()
+        val thisDay = currentday.toInt()
 
+        val dayChangeUser = mUserViewModel.getSpecificUserByDay("DayChanger")
+        val initialDay = dayChangeUser.stepsCounted
+
+        if (preDay != thisDay) {
+            d("UserLogDEBUG","Reacting to dateChange in sensor - DB saves day and changes previous day from: ${preDay} to ${thisDay}")
+            saveDayInDBAfterChange() //This also resets Daily steps
+
+            val tmpUserForDateUpdate : User = mUserViewModel.getSpecificUserByDay("DayChanger")
+
+            tmpUserForDateUpdate.stepsCounted = thisDay //Updating the steps variable for the user
+
+            mUserViewModel.update(tmpUserForDateUpdate) //finally updates the whole user in the DB
+        }
+
+        /*
         if (day != preDay){
             saveDayInDBAfterChange() //This also resets Daily steps
-            //resetDailySteps()
             preDay = day
         }
+        */
 
         if (running)
             totalStep = event!!.values[0]
@@ -311,7 +332,6 @@ class MainFragment : Fragment() , SensorEventListener {
             setProgressWithAnimation(currentSteps.toFloat())
         }
     }
-
 
     private fun resetSteps() {
         mBinding.txtStepCount.setOnLongClickListener {
