@@ -44,6 +44,7 @@ open class MainActivity : AppCompatActivity() {
         super.onResume()
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     @SuppressLint("ServiceCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,19 +116,17 @@ class MyService : Service(), SensorEventListener {
     private var running = false
     private var totalStep = 0f
     private var previousTotalStep = 0f
-    //var preDay = 0
+    var preDay = 0
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        /*
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd")
         val currentday = current.format(formatter)
         preDay = currentday.toInt()
-        */
 
         try {
-            running = true
+            running  =true
             val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
             sensorManager?.registerListener(this,stepSensor, SensorManager.SENSOR_DELAY_UI)
 
@@ -148,7 +147,6 @@ class MyService : Service(), SensorEventListener {
             totalStep = event!!.values[0]
         val currentSteps = totalStep.toInt() - previousTotalStep.toInt()
 
-        /*
         //-------Reset by day change------------------//
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd")
@@ -163,15 +161,9 @@ class MyService : Service(), SensorEventListener {
             Constant.editor(this).putFloat(STEPNUMBER,previousTotalStep).apply()
         }
         //-------------------------------------------//
-        */
-
-
 
         Constant.editor(this).putFloat(STEPNUMBER,previousTotalStep).apply()
     }
-
-
-
 
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -192,6 +184,6 @@ class MyService : Service(), SensorEventListener {
 class MyPhoneReciver : BroadcastReceiver(){
     override fun onReceive(context: Context?, intent: Intent?) {
         ContextCompat.startForegroundService(context!!, Intent(context, MyService::class.java))
-        d("UserLogDEBUG","MyPhoneReciver Called......")
+        //d("UserLogDEBUG","MyPhoneReciver Called......")
     }
 }

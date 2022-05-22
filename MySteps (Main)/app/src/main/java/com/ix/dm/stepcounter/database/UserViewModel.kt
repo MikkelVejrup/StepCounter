@@ -56,6 +56,10 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
         return repository.getSpecificUserByDay(daycode)
     }
 
+    fun updateAllStepDayGoal(stepGoal: Int) {
+        repository.updateAllStepDayGoal(stepGoal)
+    }
+
     private fun initializeDatabaseStorage() {
         //This function should create every user/day that can hold a value
         val dayCodeArray = arrayOf<String>("Mo","Tu","We","Th","Fr","Sa","Su")

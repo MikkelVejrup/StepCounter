@@ -45,6 +45,10 @@ interface UserDao {
     //Updates only the daily step Goal in a specific day
     @Query("UPDATE StepTable SET stepDayGoal=:stepGoal WHERE dayCode=:day")
     fun updateStepDayGoal(stepGoal: Int, day: String)
+
+    //Updates the daily step goal for all days
+    @Query("UPDATE StepTable SET stepDayGoal=:stepGoal WHERE LENGTH(dayCode) = 2")
+    fun updateAllStepDayGoal(stepGoal: Int)
     //======================================================================================
 
 

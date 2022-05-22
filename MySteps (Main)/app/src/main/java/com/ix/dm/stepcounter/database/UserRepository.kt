@@ -38,4 +38,8 @@ class UserRepository(private val userDao: UserDao) {
         userDao.updateStepDayGoal(stepGoal, day)
     }
 
+    fun updateAllStepDayGoal(stepGoal: Int) {
+        userDao.updateAllStepDayGoal((stepGoal))
+    }
+
 }

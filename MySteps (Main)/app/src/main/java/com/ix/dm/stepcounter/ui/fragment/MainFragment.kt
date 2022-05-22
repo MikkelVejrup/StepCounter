@@ -38,7 +38,6 @@ class MainFragment : Fragment() , SensorEventListener {
     private var manualSetSteps = 1000f
     private var detectedDateChange : Boolean = false
     private var dailyStepGoal : Int = 2500
-    private var preDay = 0
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -60,9 +59,9 @@ class MainFragment : Fragment() , SensorEventListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-       mBinding = FragmentMainBinding.inflate(inflater,container,false).apply {
-           executePendingBindings()
-       }
+        mBinding = FragmentMainBinding.inflate(inflater,container,false).apply {
+            executePendingBindings()
+        }
 
         mUserViewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
@@ -76,25 +75,27 @@ class MainFragment : Fragment() , SensorEventListener {
             setProgressWithAnimation(0f)}
 
         //Displaying current DAY in a textview-----------------------------------
-
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd")
         val currentday = current.format(formatter)
         mBinding.Time.text = ("$currentday") //Displaying current date in corner
-        //preDay = currentday.toInt()
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            val dayChangeUser = mUserViewModel.getSpecificUserByDay("DayChanger")
-            val initialDay = dayChangeUser.stepsCounted
-            preDay = initialDay
-        }, 3000)
         //-----------------------------------------------------------------------
 
         Handler(Looper.getMainLooper()).postDelayed({
             //This is a delayed caller, specific used for DB late initializing
             // of progressBars values.
             fillInPrevDaysFromDB() //Updates all history progressBars with values from DB
-        }, 2500)
+
+            //This detects if a day change has been detected in the Database and current day
+            val detectUser = mUserViewModel.getSpecificUserByDay("DayChanger")
+            val dayFromDB = detectUser.stepsCounted
+            val thisDay = currentday.toInt()
+            if (dayFromDB != thisDay) {
+                detectedDateChange = true
+                d("UserLogDEBUG","Detected diff in dat from DB and current day: dayFromDB = ${dayFromDB} and currentDay = ${thisDay}")
+            }
+        }, 2000)
 
 
         timer()
@@ -107,13 +108,13 @@ class MainFragment : Fragment() , SensorEventListener {
 
         if (totalStep < 0f)
             totalStep = 0f
-            previousTotalStep = 0f
+        previousTotalStep = 0f
         if (previousTotalStep < 0f)
             totalStep = 0f
-            previousTotalStep = 0f
+        previousTotalStep = 0f
         if (totalStep < previousTotalStep)
             totalStep = 0f
-            previousTotalStep = 0f
+        previousTotalStep = 0f
 
         super.onViewCreated(view, savedInstanceState)
     }
@@ -142,17 +143,7 @@ class MainFragment : Fragment() , SensorEventListener {
         }).start()
     }
 
-
     /*
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun detectDateChange() {
-        val currentTime: String = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date())
-
-        val c = Calendar.getInstance()
-
-        d("UserLogDEBUG","time? ${currentTime}") //used for LogCat in order to see what is saved
-    }
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun detectTimeChange() {
         //Function to check when time changes to specified value
@@ -179,24 +170,29 @@ class MainFragment : Fragment() , SensorEventListener {
         d("UserLogDEBUG","DB updates the current day after date change")
         val thisUser : User = mUserViewModel.getSpecificUserByDay(getCurrentDayCode())
 
-        //test value before
-        //val userStepsBefore = thisUser.stepsCounted
-        //d("UserLogDEBUG","userSteps Before: $userStepsBefore")
-        //===========
-
         val currentStepsTMP = totalStep.toInt() - previousTotalStep.toInt() //Calculates current steps taken
         thisUser.stepsCounted = currentStepsTMP //Updating the steps variable for the user
-
         mUserViewModel.update(thisUser) //finally updates the whole user in the DB
 
-        //test value after
-        //val thisUser2 : User = mUserViewModel.getSpecificUserByDay(getCurrentDayCode())
-        //val userStepsAfter = thisUser2.stepsCounted
-        //d("UserLogDEBUG","userSteps After: $userStepsAfter")
-        //===========
+        //Sub tasks to also be fulfilled
+        detectedDateChange = false
+        updateDBDayChanger()    //DayChanger values are updated in order to detect next day change
+        fillInPrevDaysFromDB()  //Updates every field in week track history
+        resetDailySteps()       //Ends by resetting the counted steps, to start over
+    }
 
-        fillInPrevDaysFromDB() //Updates every field in week track history
-        resetDailySteps() //Ends by resetting the counted steps, to start over
+    private fun updateDBDayChanger() {
+        val tmpUser = mUserViewModel.getSpecificUserByDay("DayChanger")
+
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("dd")
+        val currentday = current.format(formatter)
+
+        d("UserLogDEBUG","DB DayChanger is being updated with: ${currentday} instead of: ${tmpUser.stepsCounted}")
+
+        tmpUser.stepsCounted = currentday.toInt()
+
+        mUserViewModel.update(tmpUser)
     }
 
 
@@ -270,15 +266,6 @@ class MainFragment : Fragment() , SensorEventListener {
         return dayCodeTMP
     }
 
-    /*
-    private fun getCurrentStepsTaken(): Int {
-        var currentStepsTMP: Int = 0
-
-        currentStepsTMP = totalStep.toInt() - previousTotalStep.toInt()
-
-        return currentStepsTMP
-    }
-    */
 
     private fun resetDailySteps() {
         previousTotalStep = totalStep
@@ -300,28 +287,11 @@ class MainFragment : Fragment() , SensorEventListener {
         val formatter = DateTimeFormatter.ofPattern("dd")
         val currentday = current.format(formatter)
         mBinding.Time.text = ("$currentday") //Displaying current date in corner
-        val thisDay = currentday.toInt()
+        val day = currentday.toInt()
 
-        val dayChangeUser = mUserViewModel.getSpecificUserByDay("DayChanger")
-        val initialDay = dayChangeUser.stepsCounted
-
-        if (preDay != thisDay) {
-            d("UserLogDEBUG","Reacting to dateChange in sensor - DB saves day and changes previous day from: ${preDay} to ${thisDay}")
+        if (detectedDateChange){
             saveDayInDBAfterChange() //This also resets Daily steps
-
-            val tmpUserForDateUpdate : User = mUserViewModel.getSpecificUserByDay("DayChanger")
-
-            tmpUserForDateUpdate.stepsCounted = thisDay //Updating the steps variable for the user
-
-            mUserViewModel.update(tmpUserForDateUpdate) //finally updates the whole user in the DB
         }
-
-        /*
-        if (day != preDay){
-            saveDayInDBAfterChange() //This also resets Daily steps
-            preDay = day
-        }
-        */
 
         if (running)
             totalStep = event!!.values[0]
@@ -406,6 +376,7 @@ class MainFragment : Fragment() , SensorEventListener {
             mBinding.circularProgressBar.apply {
                 progressMax = dailyStepGoal.toFloat()
             }
+            mUserViewModel.updateAllStepDayGoal(dailyStepGoal) //Updates the step Goal for eachg day in DB
             saveData()
         }
     }

@@ -211,6 +211,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
+
         <TextView
             android:id="@+id/day1"
             android:layout_width="40dp"
@@ -320,7 +321,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Activety lvl "
+            android:text="Activity lvl"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -362,8 +363,8 @@
 
         <EditText
             android:id="@+id/age"
-            android:layout_width="36dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginStart="60dp"
             android:ems="10"
             android:hint="@string/age"
@@ -378,8 +379,8 @@
 
         <EditText
             android:id="@+id/ALvl"
-            android:layout_width="41dp"
-            android:layout_height="37dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:ems="10"
             android:inputType="number"
             android:text="2"
@@ -391,7 +392,7 @@
         <TextView
             android:id="@+id/txtcalSteps"
             android:layout_width="67dp"
-            android:layout_height="28dp"
+            android:layout_height="48dp"
             android:ems="10"
             android:inputType="number"
             android:text="0"
@@ -406,7 +407,7 @@
             android:id="@+id/textView7"
             android:layout_width="170dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
+            android:layout_marginStart="5dp"
             android:text="Low 1, mid 2 and high 3"
             android:textColor="@color/white"
             android:textSize="16sp"
@@ -444,6 +445,7 @@
             android:textColor="@color/white"
             app:layout_constraintBaseline_toBaselineOf="@+id/txtTotalStepCount"
             app:layout_constraintEnd_toStartOf="@+id/txtTotalStepCount" />
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
