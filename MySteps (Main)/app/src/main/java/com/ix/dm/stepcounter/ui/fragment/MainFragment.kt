@@ -26,6 +26,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.ix.dm.stepcounter.database.User
 import com.ix.dm.stepcounter.database.UserViewModel
 
+//DANIEL WAS HERE !!!!!!
+
 class MainFragment : Fragment() , SensorEventListener {
     lateinit var mBinding: FragmentMainBinding
     lateinit var mUserViewModel: UserViewModel
