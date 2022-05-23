@@ -23,4 +23,4 @@ The application uses android services to track how many steps are taken when the
 
 ![image](https://user-images.githubusercontent.com/79592248/169835056-44ea51fb-db16-47cc-a964-23578699db4f.png)
 
-![image][[(https://user-images.githubusercontent.com/79631275/169877542-733bebae-d1d4-4d55-bdf0-4cf74608593a.png) | width=200px]]
+![image][(https://user-images.githubusercontent.com/79631275/169877542-733bebae-d1d4-4d55-bdf0-4cf74608593a.png) | width=200px]
