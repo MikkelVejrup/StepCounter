@@ -16,7 +16,7 @@ For the application to work correctly, the app must be downloaded on a physical 
 ---
 
 The application can calculate how many steps one may take each day from writing age and activity level.
-It saves how many steps the user have taken the past seven days using MySQL light (Room).
+It saves how many steps the user have taken the past six days using MySQL light (Room).
 The application uses android services to track how many steps are taken when the application is closed. 
 
 ---
