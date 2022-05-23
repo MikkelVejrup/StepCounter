@@ -194,11 +194,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <TextView
             android:id="@+id/textView"
             android:layout_width="264dp"
             android:layout_height="54dp"
-            android:layout_marginTop="32dp"
             android:text="Today"
             android:textAlignment="center"
             android:textColor="@color/white"
@@ -206,11 +206,9 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/circularProgressBar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintHorizontal_bias="0.51"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
-
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/day1"

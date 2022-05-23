@@ -289,7 +289,7 @@ class MainFragment : Fragment() , SensorEventListener {
         val formatter = DateTimeFormatter.ofPattern("dd")
         val currentday = current.format(formatter)
         mBinding.Time.text = ("$currentday") //Displaying current date in corner
-        val day = currentday.toInt()
+//        val day = currentday.toInt()
 
         if (detectedDateChange){
             saveDayInDBAfterChange() //This also resets Daily steps
