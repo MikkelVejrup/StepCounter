@@ -3,16 +3,20 @@
 ## Stepcounter app by Daniel and Mikkel
 ------------------------------------
 
-### For the application to work
-For the application to work correctly, the application did need to be downloaded on a physical device and allow the application to use physical activity, which will allow it to use the step sensor
+### Introduction
+This is the "MySteps" app, which as the word describes is an app for counting steps and display it in an orderly fashion.
+The app will show the currently walked steps for the current day. When the day shifts the previous steps counted, will be saved in a Database and shown in the small history icons in the middel of the screen.
+
+### Make it Work
+For the application to work correctly, the app must be downloaded on a physical device and then allow the app to use physical activity sensors. This allows for it to use the step sensor correctly.
 
 ![image](https://user-images.githubusercontent.com/79592248/169834842-cc1e2d61-cdbd-470f-a210-0466bf09c50c.png)
 
 
 ---
 
-The application can calculate how many steps you may take etch day by knowing your age and activity level.
-It saves how many steps have taken the past seven days using MySQL light (Room).
+The application can calculate how many steps one may take each day from writing age and activity level.
+It saves how many steps the user have taken the past seven days using MySQL light (Room).
 The application uses android services to track how many steps are taken when the application is closed. 
 
 ---
