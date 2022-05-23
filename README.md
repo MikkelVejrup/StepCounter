@@ -20,5 +20,4 @@ It saves how many steps the user have taken the past seven days using MySQL ligh
 The application uses android services to track how many steps are taken when the application is closed. 
 
 ---
-
-![image](https://user-images.githubusercontent.com/79631275/169878971-84a09661-4084-4ffb-a37a-f92ee7e7a75f.png)
+![image](https://user-images.githubusercontent.com/79631275/169879194-7837b85c-56c7-4631-a62b-ee6bec73dc32.png) ![image](https://user-images.githubusercontent.com/79631275/169878971-84a09661-4084-4ffb-a37a-f92ee7e7a75f.png)
