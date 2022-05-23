@@ -19,6 +19,7 @@ The application can calculate how many steps one may take each day from writing 
 It saves how many steps the user have taken the past six days using MySQL light (Room).
 The application uses android services to track how many steps are taken when the application is closed. 
 
+The green dot on the pictures highlights the current day active for counting.
 ---
 ![image](https://user-images.githubusercontent.com/79631275/169879194-7837b85c-56c7-4631-a62b-ee6bec73dc32.png) ![image](https://user-images.githubusercontent.com/79631275/169879346-a6d16548-819a-4dfe-9009-260844e0036e.png)
 
