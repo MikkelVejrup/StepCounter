@@ -69,7 +69,7 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
             val uid = 0 //Room DB will generate auto ID Increment after first one
             val dayCode: String = dayCodeArray[i]
             val stepsCounted: Int = 0
-            val stepDayGoal: Int = 2500 //Default value stepGoal
+            val stepDayGoal: Int = 7000 //Default value stepGoal
 
             val tempUser = User(uid, dayCode, stepsCounted, stepDayGoal)
 

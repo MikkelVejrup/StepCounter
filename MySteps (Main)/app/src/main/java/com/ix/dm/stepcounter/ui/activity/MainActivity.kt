@@ -2,12 +2,9 @@ package com.ix.dm.stepcounter.ui.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.app.Dialog
 import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.hardware.Sensor
@@ -16,14 +13,12 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.*
 import android.util.Log
-import android.util.Log.d
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
 import com.ix.dm.stepcounter.R
 import com.ix.dm.stepcounter.databinding.ActivityMainBinding
 import com.ix.dm.stepcounter.other.STEPNUMBER
@@ -146,23 +141,6 @@ class MyService : Service(), SensorEventListener {
             totalStep = event!!.values[0]
         val currentSteps = totalStep.toInt() - previousTotalStep.toInt()
 
-/*        //-------Reset by day change------------------//
-        val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("dd")
-        val currentday = current.format(formatter)
-        val day = currentday.toInt()
-
-        if (day != preDay){
-            totalStep = 0f
-            previousTotalStep = totalStep
-            preDay = day
-
-            Constant.editor(this).putFloat(STEPNUMBER,previousTotalStep).apply()
-        }
-        //-------------------------------------------//
-
- */
-
         Constant.editor(this).putFloat(STEPNUMBER,previousTotalStep).apply()
     }
 
@@ -185,6 +163,5 @@ class MyService : Service(), SensorEventListener {
 class MyPhoneReciver : BroadcastReceiver(){
     override fun onReceive(context: Context?, intent: Intent?) {
         ContextCompat.startForegroundService(context!!, Intent(context, MyService::class.java))
-        //d("UserLogDEBUG","MyPhoneReciver Called......")
     }
 }

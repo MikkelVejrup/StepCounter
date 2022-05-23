@@ -176,7 +176,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="10000"
+            android:text="7000"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@+id/circularProgressBar"
@@ -337,16 +337,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
-        <TextView
-            android:id="@+id/Time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="curDate"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/age"
@@ -382,7 +372,7 @@
             android:layout_height="48dp"
             android:ems="10"
             android:inputType="number"
-            android:text="2500"
+            android:text="7000"
             android:textAlignment="textStart"
             android:textColor="@color/white"
             android:textIsSelectable="false"
@@ -433,6 +423,82 @@
             app:layout_constraintBaseline_toBaselineOf="@+id/txtTotalStepCount"
             app:layout_constraintEnd_toStartOf="@+id/txtTotalStepCount" />
 
+        <TextView
+            android:id="@+id/ProgCirc_Mo"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/circle"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/circularProgressBarMo"
+            app:layout_constraintEnd_toEndOf="@+id/circularProgressBarMo"
+            app:layout_constraintStart_toStartOf="@+id/circularProgressBarMo"
+            app:layout_constraintTop_toTopOf="@+id/circularProgressBarMo" />
+
+        <TextView
+            android:id="@+id/ProgCirc_Tu"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/circle"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/circularProgressBarTu"
+            app:layout_constraintEnd_toEndOf="@+id/circularProgressBarTu"
+            app:layout_constraintStart_toStartOf="@+id/circularProgressBarTu"
+            app:layout_constraintTop_toTopOf="@+id/circularProgressBarTu" />
+
+        <TextView
+            android:id="@+id/ProgCirc_We"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/circle"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/circularProgressBarWe"
+            app:layout_constraintEnd_toEndOf="@+id/circularProgressBarWe"
+            app:layout_constraintStart_toStartOf="@+id/circularProgressBarWe"
+            app:layout_constraintTop_toTopOf="@+id/circularProgressBarWe" />
+
+        <TextView
+            android:id="@+id/ProgCirc_Th"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/circle"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/circularProgressBarTh"
+            app:layout_constraintEnd_toEndOf="@+id/circularProgressBarTh"
+            app:layout_constraintStart_toStartOf="@+id/circularProgressBarTh"
+            app:layout_constraintTop_toTopOf="@+id/circularProgressBarTh" />
+
+        <TextView
+            android:id="@+id/ProgCirc_Fr"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/circle"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/circularProgressBarFr"
+            app:layout_constraintEnd_toEndOf="@+id/circularProgressBarFr"
+            app:layout_constraintStart_toStartOf="@+id/circularProgressBarFr"
+            app:layout_constraintTop_toTopOf="@+id/circularProgressBarFr" />
+
+        <TextView
+            android:id="@+id/ProgCirc_Sa"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/circle"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/circularProgressBarSa"
+            app:layout_constraintEnd_toEndOf="@+id/circularProgressBarSa"
+            app:layout_constraintStart_toStartOf="@+id/circularProgressBarSa"
+            app:layout_constraintTop_toTopOf="@+id/circularProgressBarSa" />
+
+        <TextView
+            android:id="@+id/ProgCirc_Su"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/circle"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/circularProgressBarSu"
+            app:layout_constraintEnd_toEndOf="@+id/circularProgressBarSu"
+            app:layout_constraintStart_toStartOf="@+id/circularProgressBarSu"
+            app:layout_constraintTop_toTopOf="@+id/circularProgressBarSu" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
