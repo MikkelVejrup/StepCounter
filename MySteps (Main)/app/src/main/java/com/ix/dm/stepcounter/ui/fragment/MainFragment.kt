@@ -119,7 +119,7 @@ class MainFragment : Fragment() , SensorEventListener {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    var run = true //set it to false if you want to stop the timer
+    var run = true //set it to false if you want to stop the timer!
     var mHandler: Handler = Handler()
     fun timer() { //Displays current time "Live" in a textView by updating it all the time
         Thread(object : Runnable {
