@@ -34,8 +34,8 @@ class MainFragment : Fragment() , SensorEventListener {
     private var running : Boolean = false
     private var totalStep = 0f
     private var previousTotalStep = 0f
-    private var stepsResetByLongPress : Boolean = false //FOR DATABASE TEST
-    private var manualSetSteps = 1000f
+//    private var stepsResetByLongPress : Boolean = false //FOR DATABASE TEST
+//    private var manualSetSteps = 1000f
     private var detectedDateChange : Boolean = false
     private var dailyStepGoal : Int = 2500
 
@@ -98,10 +98,10 @@ class MainFragment : Fragment() , SensorEventListener {
         }, 2000)
 
 
-        timer()
+
         loadData()
         resetSteps()
-        //detectDateChange()
+//        //detectDateChange()
         calStep()
         setStepGoal()
         sensorManager = requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -119,7 +119,7 @@ class MainFragment : Fragment() , SensorEventListener {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    var run = true //set it to false if you want to stop the timer!
+/*    var run = true //set it to false if you want to stop the timer!
     var mHandler: Handler = Handler()
     fun timer() { //Displays current time "Live" in a textView by updating it all the time
         Thread(object : Runnable {
@@ -142,6 +142,8 @@ class MainFragment : Fragment() , SensorEventListener {
             }
         }).start()
     }
+
+ */
 
     /*
     @RequiresApi(Build.VERSION_CODES.O)
@@ -291,6 +293,14 @@ class MainFragment : Fragment() , SensorEventListener {
 
         if (detectedDateChange){
             saveDayInDBAfterChange() //This also resets Daily steps
+        }else if(! detectedDateChange){
+            val detectUser = mUserViewModel.getSpecificUserByDay("DayChanger")
+            val dayFromDB = detectUser.stepsCounted
+            val thisDay = currentday.toInt()
+            if (dayFromDB != thisDay) {
+                detectedDateChange = true
+                d("UserLogDEBUG","Detected diff in dat from DB and current day: dayFromDB = ${dayFromDB} and currentDay = ${thisDay}")
+            }
         }
 
         if (running)
@@ -316,6 +326,7 @@ class MainFragment : Fragment() , SensorEventListener {
     }
 
     private fun calStep(){
+        // https://firstquotehealth.com/health-insurance/news/recommended-steps-day?fbclid=IwAR0ocxgIy1sqjBWLTDzHqsnrEZdGjlxThvUtaXDz1vjp36G5PH87Mq6oMiY
         mBinding.bCalStep.setOnClickListener {
             val age = mBinding.age.text.toString().toInt()
             val aLvl = mBinding.ALvl.text.toString().toInt()

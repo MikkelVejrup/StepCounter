@@ -30,7 +30,6 @@ import com.ix.dm.stepcounter.other.STEPNUMBER
 import com.ix.dm.stepcounter.ui.fragment.MainFragment
 import com.ix.dm.stepcounter.util.Constant
 import kotlinx.android.synthetic.main.activity_main.*
-
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -147,7 +146,7 @@ class MyService : Service(), SensorEventListener {
             totalStep = event!!.values[0]
         val currentSteps = totalStep.toInt() - previousTotalStep.toInt()
 
-        //-------Reset by day change------------------//
+/*        //-------Reset by day change------------------//
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd")
         val currentday = current.format(formatter)
@@ -161,6 +160,8 @@ class MyService : Service(), SensorEventListener {
             Constant.editor(this).putFloat(STEPNUMBER,previousTotalStep).apply()
         }
         //-------------------------------------------//
+
+ */
 
         Constant.editor(this).putFloat(STEPNUMBER,previousTotalStep).apply()
     }
