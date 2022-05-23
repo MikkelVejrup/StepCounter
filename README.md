@@ -23,6 +23,4 @@ The application uses android services to track how many steps are taken when the
 
 ![image](https://user-images.githubusercontent.com/79592248/169835056-44ea51fb-db16-47cc-a964-23578699db4f.png)
 
-![MyStepsScreen](https://user-images.githubusercontent.com/79631275/169878168-85e14620-13aa-4a9b-8284-77d9ee4202b8.jpg)
-
-<img src="[https://your-image-url.type](https://user-images.githubusercontent.com/79631275/169878168-85e14620-13aa-4a9b-8284-77d9ee4202b8.jpg)" width="100" height="100">
+![image](https://user-images.githubusercontent.com/79631275/169878777-2608a172-69b4-468b-ad28-31f72f414931.png)
